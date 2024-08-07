@@ -4,20 +4,35 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using static Codefactors.DataFabric.Subscriptions.SubscriptionPathUtils;
+
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Entity that represents a tree of subscriptions keyed on subscription path.
+/// </summary>
 public class SubscriptionTree : SubscriptionTreeNode
 {
-    // Initialises a new instance of the SubscriptionTree class, as the root node, with a pseudo-value of '/'.
+    /// <summary>
+    /// Initialises a new instance of the SubscriptionTree class, as the root node, with a pseudo-value of '/'.
+    /// </summary>
     public SubscriptionTree()
         : base(new string(PathSeparator, 1))
     {
     }
 
-    public void RegisterSubscriptionPath(string path, IEntityProvider entityProvider)
+    /// <summary>
+    /// Registers a data source against a subscription path.
+    /// </summary>
+    /// <param name="path">Subscription path.</param>
+    /// <param name="dataSource">Data source.</param>
+    /// <exception cref="ArgumentNullException">Thrown if the supplied data source is null.</exception>
+    /// <exception cref="ArgumentException">Thrown if a subscription path already exists, or if it contains
+    /// empty segments.</exception>
+    public void RegisterSubscriptionPath(string path, ISubscriptionDataSource dataSource)
     {
-        if (entityProvider == null)
-            throw new ArgumentNullException(nameof(entityProvider), "Entity provider cannot be null");
+        if (dataSource == null)
+            throw new ArgumentNullException(nameof(dataSource), "Subscription data source cannot be null");
 
         if (path.Contains(DoublePathSeparator))
             throw new ArgumentException("Subscription path cannot contain empty segments", nameof(path));
@@ -32,20 +47,20 @@ public class SubscriptionTree : SubscriptionTreeNode
         {
             if (segments.Length == 1)
             {
-                if (segmentNode.EntityProvider != null)
+                if (segmentNode.DataSource != null)
                     throw new ArgumentException("Subscription path already exists", nameof(path));
 
-                segmentNode.Update(entityProvider);
+                segmentNode.Update(dataSource);
             }
             else
             {
-                segmentNode.Add(segments.Skip(1), entityProvider);
+                segmentNode.Add(segments.Skip(1), dataSource);
             }
         }
         // Otherwise, add it to the root
         else
         {
-            Add(segments, entityProvider);
+            Add(segments, dataSource);
         }
     }
 }

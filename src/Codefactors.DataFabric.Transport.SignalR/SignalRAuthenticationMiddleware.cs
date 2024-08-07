@@ -4,14 +4,23 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-using Microsoft.AspNetCore.Http;
-
 namespace Codefactors.DataFabric.Transport.SignalR;
 
+/// <summary>
+/// Middleware to add the access token from query param to the header before authentication middleware runs.  This is needed
+/// as web sockets cannot pass headers.
+/// </summary>
+/// <param name="next">Next <see cref="RequestDelegate"/> in the pipeline to invoke.</param>
+/// <param name="hubPath">Path to the SignalR hub URL path.</param>
 public class SignalRAuthenticationMiddleware(RequestDelegate next, string hubPath)
 {
     private readonly RequestDelegate _next = next;
 
+    /// <summary>
+    /// Copies the access token from query param to the header before authentication middleware runs.
+    /// </summary>
+    /// <param name="httpContext"><see cref="HttpContext"/>.</param>
+    /// <returns>Result of invoking next entry in middleware pipline.</returns>
     public async Task Invoke(HttpContext httpContext)
     {
         var request = httpContext.Request;

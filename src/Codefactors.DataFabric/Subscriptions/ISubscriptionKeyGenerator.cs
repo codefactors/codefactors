@@ -6,7 +6,15 @@
 
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Interface for entities that generate subscription keys.
+/// </summary>
 public interface ISubscriptionKeyGenerator
 {
+    /// <summary>
+    /// Generates the subscription key for the specified request context.
+    /// </summary>
+    /// <param name="requestContext">Request context.</param>
+    /// <returns>Subscription key.</returns>
     string GenerateKey(IRequestContext requestContext);
 }

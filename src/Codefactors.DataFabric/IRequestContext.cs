@@ -4,9 +4,11 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-namespace Codefactors.DataFabric.Messaging
+namespace Codefactors.DataFabric;
+
+/// <summary>
+/// Interface that provides access to the request context.
+/// </summary>
+public interface IRequestContext
 {
-    internal interface IChannel
-    {
-    }
 }

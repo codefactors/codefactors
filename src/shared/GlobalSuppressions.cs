@@ -27,3 +27,10 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = ".NET 8.0 or above")]
 [assembly: SuppressMessage("Style", "IDE0300:Simplify collection initialization", Justification = ".NET 8.0 or above")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "Preference")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1010:Opening square brackets should be spaced correctly", Justification = "False positive")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "False positive")]
+
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1515:Single-line comment should be preceded by blank line", Justification = "Necessary inline comment", Scope = "member", Target = "~M:Codefactors.DataFabric.Subscriptions.SubscriptionMatcher.Match(System.String)~Codefactors.DataFabric.Reflection.InvocationHelper")]
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Necessary inline comment", Scope = "member", Target = "~M:Codefactors.DataFabric.Subscriptions.SubscriptionMatcher.Match(System.String)~Codefactors.DataFabric.Reflection.InvocationHelper")]
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Necessary inline comment", Scope = "member", Target = "~M:Codefactors.DataFabric.Subscriptions.SubscriptionTree.RegisterSubscriptionPath(System.String,Codefactors.DataFabric.Subscriptions.ISubscriptionDataSource)")]
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1515:Single-line comment should be preceded by blank line", Justification = "Necessary inline comment", Scope = "member", Target = "~M:Codefactors.DataFabric.Subscriptions.SubscriptionTree.RegisterSubscriptionPath(System.String,Codefactors.DataFabric.Subscriptions.ISubscriptionDataSource)")]

@@ -4,6 +4,7 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.DataFabric.Subscriptions;
 using FluentAssertions;
 
 namespace Codefactors.DataFabric.Tests;
@@ -13,14 +14,14 @@ public partial class SubscriptionTreeTests
     [Fact]
     public void TestRegister()
     {
-        var entityProviders = TestEntityProvider.MakeEntityProviders((text) => { });
+        var entityProviders = TestDataSource.MakeDataSources((text) => { });
 
         var tree = new SubscriptionTree();
         tree.RegisterSubscriptionPath("/employers", entityProviders[0]);
 
         tree.Children.Count.Should().Be(1);
         tree.Children.First().Value.Should().Be("employers");
-        tree.Children.First().EntityProvider.Should().BeEquivalentTo(entityProviders[0]);
+        tree.Children.First().DataSource.Should().BeEquivalentTo(entityProviders[0]);
 
         Action act = () => tree.RegisterSubscriptionPath("/employers", entityProviders[0]);
 
@@ -33,11 +34,11 @@ public partial class SubscriptionTreeTests
 
         tree.Children.Count.Should().Be(1);
         tree.Children.First().Value.Should().Be("employers");
-        tree.Children.First().EntityProvider.Should().BeNull();
+        tree.Children.First().DataSource.Should().BeNull();
 
         tree.Children.First().Children.Count.Should().Be(1);
         tree.Children.First().Children.First().Value.Should().Be("{employerId}");
-        tree.Children.First().Children.First().EntityProvider.Should().BeEquivalentTo(entityProviders[1]);
+        tree.Children.First().Children.First().DataSource.Should().BeEquivalentTo(entityProviders[1]);
 
         tree = new SubscriptionTree();
 
@@ -45,50 +46,50 @@ public partial class SubscriptionTreeTests
 
         tree.Children.Count.Should().Be(1);
         tree.Children.First().Value.Should().Be("employers");
-        tree.Children.First().EntityProvider.Should().BeNull();
+        tree.Children.First().DataSource.Should().BeNull();
 
         tree.Children.First().Children.Count.Should().Be(1);
         tree.Children.First().Children.First().Value.Should().Be("{employerId}");
-        tree.Children.First().Children.First().EntityProvider.Should().BeNull();
+        tree.Children.First().Children.First().DataSource.Should().BeNull();
 
         tree.Children.First().Children.First().Children.Count.Should().Be(1);
         tree.Children.First().Children.First().Children.First().Value.Should().Be("employees");
-        tree.Children.First().Children.First().Children.First().EntityProvider.Should().BeEquivalentTo(entityProviders[2]);
+        tree.Children.First().Children.First().Children.First().DataSource.Should().BeEquivalentTo(entityProviders[2]);
 
         tree.RegisterSubscriptionPath("/employers/{employerId}/payruns", entityProviders[3]);
 
         tree.Children.Count.Should().Be(1);
         tree.Children.First().Value.Should().Be("employers");
-        tree.Children.First().EntityProvider.Should().BeNull();
+        tree.Children.First().DataSource.Should().BeNull();
 
         tree.Children.First().Children.Count.Should().Be(1);
         tree.Children.First().Children.First().Value.Should().Be("{employerId}");
-        tree.Children.First().Children.First().EntityProvider.Should().BeNull();
+        tree.Children.First().Children.First().DataSource.Should().BeNull();
 
         tree.Children.First().Children.First().Children.Count.Should().Be(2);
         tree.Children.First().Children.First().Children.Any(c => c.Value == "employees").Should().BeTrue();
-        tree.Children.First().Children.First().Children.First(c => c.Value == "employees").EntityProvider.Should().BeEquivalentTo(entityProviders[2]);
+        tree.Children.First().Children.First().Children.First(c => c.Value == "employees").DataSource.Should().BeEquivalentTo(entityProviders[2]);
         tree.Children.First().Children.First().Children.Any(c => c.Value == "payruns").Should().BeTrue();
-        tree.Children.First().Children.First().Children.First(c => c.Value == "payruns").EntityProvider.Should().BeEquivalentTo(entityProviders[3]);
+        tree.Children.First().Children.First().Children.First(c => c.Value == "payruns").DataSource.Should().BeEquivalentTo(entityProviders[3]);
     }
 
     [Fact]
     public void TestRegisterEmpty()
     {
-        TestEntityProvider? rootEntityProvider = null;
+        TestDataSource? rootEntityProvider = null;
 
         var tree = new SubscriptionTree();
 
         Action act = () => tree.RegisterSubscriptionPath("/employers", rootEntityProvider!);
 
         act.Should().Throw<ArgumentException>()
-            .WithMessage("Entity provider cannot be null (Parameter 'entityProvider')");
+            .WithMessage("Subscription data source cannot be null (Parameter 'dataSource')");
     }
 
     [Fact]
     public void TestRegisterBadPaths()
     {
-        var entityProviders = TestEntityProvider.MakeEntityProviders((text) => { });
+        var entityProviders = TestDataSource.MakeDataSources((text) => { });
 
         var tree = new SubscriptionTree();
 
@@ -111,7 +112,7 @@ public partial class SubscriptionTreeTests
     [Fact]
     public void TestRegisterBadPlaceholders()
     {
-        var entityProviders = TestEntityProvider.MakeEntityProviders((text) => { });
+        var entityProviders = TestDataSource.MakeDataSources((text) => { });
 
         var tree = new SubscriptionTree();
 

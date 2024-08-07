@@ -7,11 +7,8 @@
 using VueExample;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var configuration = builder.Configuration;
+var services = builder.Services;
 
 // In production, the Vite files will be served from this directory
 builder.Services.AddSpaStaticFiles(configuration =>
@@ -19,15 +16,7 @@ builder.Services.AddSpaStaticFiles(configuration =>
     configuration.RootPath = "ClientApp/dist";
 });
 
-
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 
@@ -40,6 +29,7 @@ var summaries = new[]
 };
 
 app.UseRouting();
+
 app.UseEndpoints(endpoint =>
 {
     endpoint.MapGet("/weatherforecast", () =>

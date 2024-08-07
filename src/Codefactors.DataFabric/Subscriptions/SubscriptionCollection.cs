@@ -6,8 +6,17 @@
 
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Collection container for subscriptions.
+/// </summary>
 public class SubscriptionCollection : ConcurrentCollection<ISubscription>
 {
+    /// <summary>
+    /// Notifies all subscriptions of an update.
+    /// </summary>
+    /// <param name="subscriptionPath">Subscription path.</param>
+    /// <param name="update">Update content.</param>
+    /// <returns><see cref="Task"/>.</returns>
     public async Task NotifyAllAsync(string subscriptionPath, object update) =>
         await ForEachAsync(subscription => NotifyAsync(subscription, subscriptionPath, update));
 

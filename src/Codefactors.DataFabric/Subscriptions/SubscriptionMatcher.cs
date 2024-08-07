@@ -4,12 +4,26 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.DataFabric.Diagnostics;
+using Codefactors.DataFabric.Reflection;
+using static Codefactors.DataFabric.Subscriptions.SubscriptionPathUtils;
+
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Subscription path matcher for matching paths against available subscriptions.
+/// </summary>
+/// <param name="subscriptionTree">Subscription tree to search for path matches.</param>
 public class SubscriptionMatcher(SubscriptionTree subscriptionTree)
 {
     private readonly SubscriptionTree _subscriptionTree = subscriptionTree;
 
+    /// <summary>
+    /// Matches a path against the available subscriptions.
+    /// </summary>
+    /// <param name="path">Subscription path.</param>
+    /// <returns>Invocation helper for the specified subcription path.</returns>
+    /// <exception cref="SubscriptionException">Thrown if no match is found.</exception>
     public InvocationHelper Match(string path)
     {
         try
@@ -59,7 +73,7 @@ public class SubscriptionMatcher(SubscriptionTree subscriptionTree)
         // NB Also catches ArgumentNullException
         catch (ArgumentException ex)
         {
-            throw new SubscriptionException(ex.Message);
+            throw new SubscriptionException(ex.Message, ex);
         }
 
         throw new SubscriptionException("Unable to match path against available subscriptions");
@@ -74,7 +88,7 @@ public class SubscriptionMatcher(SubscriptionTree subscriptionTree)
         in SubscriptionTreeNode node,
         in Dictionary<string, string> parameters) =>
         new InvocationHelper(
-            node.EntityProvider ??
+            node.DataSource ??
                 throw new SubscriptionException("Unable to resolve subscription error; internal configuration error"),
             parameters);
 }

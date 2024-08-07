@@ -6,7 +6,16 @@
 
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Factory for creating subscriptions.
+/// </summary>
 public interface ISubscriptionFactory
 {
+    /// <summary>
+    /// Creates a new subscription.
+    /// </summary>
+    /// <param name="requestContext">Request context for the subscriber.</param>
+    /// <param name="subscriptionPath">Subscription path.</param>
+    /// <returns>New subscription.</returns>
     ISubscription Create(IRequestContext requestContext, string subscriptionPath);
 }

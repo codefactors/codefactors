@@ -6,14 +6,35 @@
 
 namespace Codefactors.DataFabric.Subscriptions;
 
-public static class PathUtils
+/// <summary>
+/// Static class that provides utility methods for working with subscription paths.
+/// </summary>
+public static class SubscriptionPathUtils
 {
+    /// <summary>Path element separator character.</summary>
     public const char PathSeparator = '/';
+
+    /// <summary>Open placeholder character.</summary>
     public const char OpenPlaceholder = '{';
+
+    /// <summary>Close placeholder character.</summary>
     public const char ClosePlaceholder = '}';
+
+    /// <summary>Invalid double placeholder string.</summary>
     public const string DoublePathSeparator = "//";
+
+    /// <summary>Invalid empty placeholder string.</summary>
     public const string EmptyPlaceholder = "{}";
 
+    /// <summary>
+    /// Splits the supplied string into path segments.
+    /// </summary>
+    /// <param name="path">Subscription path to be split.</param>
+    /// <param name="registering">Set to true if the path is being registered; false otherwise.</param>
+    /// <returns>Array of path segments, as strings.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if the path supplied is empty or null.</exception>
+    /// <exception cref="ArgumentException">Thrown if the path starts with a placeholder or if a placeholder
+    /// is ill-formed.</exception>
     public static string[] Split(string path, bool registering = false)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -33,12 +54,12 @@ public static class PathUtils
             if (IsPlaceholderSegment(segments[0]))
                 throw new ArgumentException("Subscription path cannot start with a placeholder", nameof(path));
 
-            if (segments.Any(s => IsIllformedPlaceholder(s)))
+            if (segments.Any(s => IsIllFormedPlaceholder(s)))
                 throw new ArgumentException("Subscription path contains ill-formed placeholders", nameof(path));
         }
         else
         {
-            if (segments.Any(s => IsPlaceholderSegment(s)) || IsIllformedPlaceholder(path))
+            if (segments.Any(s => IsPlaceholderSegment(s)) || IsIllFormedPlaceholder(path))
                 throw new ArgumentException("Invalid subscription path; path cannot contain '{' or '}''", nameof(path));
         }
 
@@ -48,10 +69,20 @@ public static class PathUtils
         return segments;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether the supplied segment is a placeholder.
+    /// </summary>
+    /// <param name="segment">Path segment.</param>
+    /// <returns>True if the path segment is a placeholder, false otherwise.</returns>
     public static bool IsPlaceholderSegment(string segment) =>
         segment.Length > 2 && segment[0] == OpenPlaceholder && segment[^1] == ClosePlaceholder;
 
-    public static bool IsIllformedPlaceholder(string segment)
+    /// <summary>
+    /// Tests the supplied segment for ill-formed placeholders.
+    /// </summary>
+    /// <param name="segment">Path segment.</param>
+    /// <returns>True if the segment contains an invalid placeholder, false otherwise.</returns>
+    public static bool IsIllFormedPlaceholder(string segment)
     {
         var openPlacoeholderCount = segment.Count(c => c == OpenPlaceholder);
         var closePlaceholderCount = segment.Count(c => c == ClosePlaceholder);

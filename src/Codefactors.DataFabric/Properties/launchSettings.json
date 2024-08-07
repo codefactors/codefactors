@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Codefactors.DataFabric": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52116;http://localhost:52117"
+    }
+  }
+}

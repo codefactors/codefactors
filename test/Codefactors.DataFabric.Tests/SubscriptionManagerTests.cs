@@ -4,6 +4,8 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.DataFabric.Diagnostics;
+using Codefactors.DataFabric.Subscriptions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -19,12 +21,12 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
     {
         var entityObject = new TestEntityObject(_outputHelper.WriteLine);
 
-        var entities = new EntityProvider[]
+        var entities = new SubscriptionDataSource[]
         {
-            new EntityProvider(entityObject, "GetEmployers"),
-            new EntityProvider(entityObject, "GetEmployer"),
-            new EntityProvider(entityObject, "GetEmployees"),
-            new EntityProvider(entityObject, "GetEmployee"),
+            new SubscriptionDataSource(entityObject, "GetEmployers"),
+            new SubscriptionDataSource(entityObject, "GetEmployer"),
+            new SubscriptionDataSource(entityObject, "GetEmployees"),
+            new SubscriptionDataSource(entityObject, "GetEmployee"),
         };
 
         var updates = new Stack<object>();
@@ -69,12 +71,12 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
     {
         var entityObject = new TestEntityObject(_outputHelper.WriteLine);
 
-        var entities = new EntityProvider[]
+        var entities = new SubscriptionDataSource[]
         {
-            new EntityProvider(entityObject, "GetEmployers"),
-            new EntityProvider(entityObject, "GetEmployer"),
-            new EntityProvider(entityObject, "GetEmployees"),
-            new EntityProvider(entityObject, "GetEmployee"),
+            new SubscriptionDataSource(entityObject, "GetEmployers"),
+            new SubscriptionDataSource(entityObject, "GetEmployer"),
+            new SubscriptionDataSource(entityObject, "GetEmployees"),
+            new SubscriptionDataSource(entityObject, "GetEmployee"),
         };
 
         var updates = new Stack<object>();
@@ -94,7 +96,7 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
             .WithMessage("Invalid value 'hampster' for parameter 'employerId'");
     }
 
-    private SubscriptionTree CreateSubscriptionTree(EntityProvider[] entities)
+    private SubscriptionTree CreateSubscriptionTree(SubscriptionDataSource[] entities)
     {
         var tree = new SubscriptionTree();
 

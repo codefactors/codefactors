@@ -4,6 +4,9 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.DataFabric.Diagnostics;
+using Codefactors.DataFabric.Reflection;
+using Codefactors.DataFabric.Subscriptions;
 using FluentAssertions;
 using Xunit.Abstractions;
 
@@ -21,28 +24,28 @@ public class SubscriptionMatcherTests
     [Fact]
     public void TestValidMatches()
     {
-        var entityProviders = TestEntityProvider.MakeEntityProviders((text) => { });
+        var dataSources = TestDataSource.MakeDataSources((text) => { });
 
-        var tree = MakeSubscriptionTree(entityProviders);
+        var tree = MakeSubscriptionTree(dataSources);
 
         var matcher = new SubscriptionMatcher(tree);
 
         matcher.Match("/employers")
-            .Should().BeEquivalentTo(new InvocationHelper(entityProviders[0], new Dictionary<string, string>()));
+            .Should().BeEquivalentTo(new InvocationHelper(dataSources[0], new Dictionary<string, string>()));
 
         var match2 = matcher.Match("/employers/6de5ce43-4f82-4990-b5be-882fde5abe5d");
 
-        match2.EntityProvider.Should().Be(entityProviders[1]);
+        match2.SubscriptionDataSource.Should().Be(dataSources[1]);
         match2.Parameters["employerId"].Should().Be("6de5ce43-4f82-4990-b5be-882fde5abe5d");
 
         var match3 = matcher.Match("/employers/6de5ce43-4f82-4990-b5be-882fde5abe5d/employees");
 
-        match3.EntityProvider.Should().Be(entityProviders[2]);
+        match3.SubscriptionDataSource.Should().Be(dataSources[2]);
         match3.Parameters["employerId"].Should().Be("6de5ce43-4f82-4990-b5be-882fde5abe5d");
 
         var match4 = matcher.Match("/employers/6de5ce43-4f82-4990-b5be-882fde5abe5d/employees/47e5f868-83fa-4222-ac76-891200025ee7");
 
-        match4.EntityProvider.Should().Be(entityProviders[3]);
+        match4.SubscriptionDataSource.Should().Be(dataSources[3]);
         match4.Parameters["employerId"].Should().Be("6de5ce43-4f82-4990-b5be-882fde5abe5d");
         match4.Parameters["employeeId"].Should().Be("47e5f868-83fa-4222-ac76-891200025ee7");
     }
@@ -50,7 +53,7 @@ public class SubscriptionMatcherTests
     [Fact]
     public void TestInvalidMatches()
     {
-        var entityProviders = TestEntityProvider.MakeEntityProviders((text) => { });
+        var entityProviders = TestDataSource.MakeDataSources((text) => { });
         var tree = MakeSubscriptionTree(entityProviders);
 
         var matcher = new SubscriptionMatcher(tree);
@@ -81,7 +84,7 @@ public class SubscriptionMatcherTests
             .WithMessage("Unable to match path against available subscriptions");
     }
 
-    private static SubscriptionTree MakeSubscriptionTree(TestEntityProvider[] entityProviders)
+    private static SubscriptionTree MakeSubscriptionTree(TestDataSource[] entityProviders)
     {
 
         var tree = new SubscriptionTree();

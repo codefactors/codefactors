@@ -4,11 +4,18 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-using Microsoft.Extensions.Logging;
+using Codefactors.DataFabric.Diagnostics;
+using Codefactors.DataFabric.Reflection;
 using System.Collections.Concurrent;
 
 namespace Codefactors.DataFabric.Subscriptions;
 
+/// <summary>
+/// Subscription manager entity.
+/// </summary>
+/// <param name="subscriptionMatcher">Subscription matcher.</param>
+/// <param name="subscriptionFactory">Subscription factory.</param>
+/// <param name="logger">Logger for diagnostic logging.</param>
 public class SubscriptionManager(
     SubscriptionMatcher subscriptionMatcher,
     ISubscriptionFactory subscriptionFactory,
@@ -20,8 +27,20 @@ public class SubscriptionManager(
     private readonly ConcurrentDictionary<string, SubscriptionCollection> _subscriptions = new ConcurrentDictionary<string, SubscriptionCollection>();
     private readonly ILogger _logger = logger;
 
+    /// <summary>
+    /// Gets the invocation that matches the supplied path.
+    /// </summary>
+    /// <param name="path">Subscription path.</param>
+    /// <returns>Invocation helper that pertains to the specified subcription path.</returns>
+    /// <exception cref="SubscriptionException">>Thrown if the subscription path cannot be matched.</exception>
     public InvocationHelper MatchPath(string path) => _subscriptionMatcher.Match(path);
 
+    /// <summary>
+    /// Adds a subscription.
+    /// </summary>
+    /// <param name="requestContext">Request context.</param>
+    /// <param name="path">Subscription path.</param>
+    /// <returns>Current data for the subscription.</returns>
     public async Task<object> AddSubscriptionAsync(IRequestContext requestContext, string path)
     {
         try
@@ -49,6 +68,12 @@ public class SubscriptionManager(
         }
     }
 
+    /// <summary>
+    /// Removes a subscription.
+    /// </summary>
+    /// <param name="requestContext">Request context.</param>
+    /// <param name="path">Subscription path.</param>
+    /// <returns><see cref="Task"/>.</returns>
     public Task RemoveSubscriptionAsync(IRequestContext requestContext, string path)
     {
         if (_subscriptions.TryGetValue(path, out var subscribers))
@@ -61,6 +86,12 @@ public class SubscriptionManager(
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Notifies subscribers of an update.
+    /// </summary>
+    /// <param name="path">Subscription path.</param>
+    /// <param name="update">Update content.</param>
+    /// <returns><see cref="Task"/>.</returns>
     public async Task NotifySubscribersAsync(string path, object update)
     {
         try

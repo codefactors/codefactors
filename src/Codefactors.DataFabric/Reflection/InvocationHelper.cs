@@ -1,0 +1,94 @@
+﻿// Copyright (c) 2024, Codefactors Ltd.
+//
+// Codefactors Ltd licenses this file to you under the following license(s):
+//
+//   * The MIT License, see https://opensource.org/license/mit/
+
+using System.Reflection;
+using Codefactors.DataFabric.Subscriptions;
+
+namespace Codefactors.DataFabric.Reflection;
+
+/// <summary>
+/// Helper class for invoking a method on a subscription data source.
+/// </summary>
+/// <param name="subscriptionDataSource">Subscription data source.</param>
+/// <param name="parameters">Parameters to pass to invocation.</param>
+public class InvocationHelper(ISubscriptionDataSource subscriptionDataSource, IDictionary<string, string> parameters)
+{
+    /// <summary>
+    /// Gets the subscription data source.
+    /// </summary>
+    public ISubscriptionDataSource SubscriptionDataSource { get; } = subscriptionDataSource;
+
+    /// <summary>
+    /// Gets the parameters to pass to the invocation, as a dictionary keyed on paramter name.
+    /// </summary>
+    public IDictionary<string, string> Parameters { get; } = parameters;
+
+    /// <summary>
+    /// Invokes the request method on the subscription data source.
+    /// </summary>
+    /// <param name="requestContext">Request context.</param>
+    /// <returns>Data returned by data source.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if any empty parameter name is supplied.</exception>
+    /// <exception cref="ArgumentException">Thrown if a parameter is missing, or if an invalid value is passed
+    /// for one of the parameters.</exception>
+    public async Task<object> InvokeAsync(IRequestContext requestContext)
+    {
+        var methodParameters = SubscriptionDataSource.MethodInfo.GetParameters();
+
+        var invocationValues = new object[methodParameters.Length];
+
+        for (int i = 0; i < methodParameters.Length; i++)
+        {
+            if (methodParameters[i].ParameterType == typeof(IRequestContext))
+            {
+                invocationValues[i] = requestContext;
+            }
+            else
+            {
+                var parameterName = methodParameters[i].Name ??
+                    throw new InvalidOperationException($"Unable to invoke method; parameter #{i + 1} of method {SubscriptionDataSource.MethodInfo.Name} (instance of type {SubscriptionDataSource.Instance.GetType().Name}) returned null");
+
+                if (Parameters.TryGetValue(parameterName, out var paramValue))
+                {
+                    try
+                    {
+                        invocationValues[i] = CoerceParameter(paramValue, methodParameters[i]);
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new ArgumentException($"Invalid value '{paramValue}' for parameter '{parameterName}'", ex);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException($"Missing parameter '{parameterName}'");
+                }
+            }
+        }
+
+        return await SubscriptionDataSource.InvokeAsync(invocationValues);
+    }
+
+    /// <summary>
+    /// Gets the string representation of the invocation helper, for debug purposes.
+    /// </summary>
+    /// <returns>String representation of this helper.</returns>
+    public override string ToString()
+    {
+        return $"{SubscriptionDataSource.MethodInfo.Name}({string.Join(", ", Parameters.Select(p => $"{p.Key}={p.Value}"))})";
+    }
+
+    private object CoerceParameter(string value, ParameterInfo parameterInfo)
+    {
+        var type = parameterInfo.ParameterType;
+
+        return true switch
+        {
+            true when type == typeof(Guid) => Guid.TryParse(value, out var guid) ? guid : throw new FormatException($"Parameter cannot be coerced to GUID, invalid format '{value}'"),
+            _ => value,
+        };
+    }
+}
