@@ -17,7 +17,7 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
     [Fact]
     public async Task TestAddSubscriptions()
     {
-        var entityObject = new EntityObject(_outputHelper.WriteLine);
+        var entityObject = new TestEntityObject(_outputHelper.WriteLine);
 
         var entities = new EntityProvider[]
         {
@@ -67,7 +67,7 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
     [Fact]
     public async Task AddInvalidSubscriptions()
     {
-        var entityObject = new EntityObject(_outputHelper.WriteLine);
+        var entityObject = new TestEntityObject(_outputHelper.WriteLine);
 
         var entities = new EntityProvider[]
         {

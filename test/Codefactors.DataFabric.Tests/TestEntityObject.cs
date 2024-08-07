@@ -6,7 +6,7 @@
 
 namespace Codefactors.DataFabric.Tests;
 
-internal class EntityObject(Action<string> reporter)
+internal class TestEntityObject(Action<string> reporter)
 {
     private readonly Action<string> _reporter = reporter;
 

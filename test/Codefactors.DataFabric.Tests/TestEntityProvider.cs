@@ -15,7 +15,7 @@ internal class TestEntityProvider : EntityProvider
 
     public static TestEntityProvider[] MakeEntityProviders(Action<string> action)
     {
-        var entityObject = new EntityObject(action);
+        var entityObject = new TestEntityObject(action);
 
         return
         [
