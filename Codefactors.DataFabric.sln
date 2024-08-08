@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueExample", "example\VueEx
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "datafabric", "src\datafabric-ts\datafabric.esproj", "{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Utilities", "src\Codefactors.Utilities\Codefactors.Utilities.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Authentication", "src\Codefactors.Authentication\Codefactors.Authentication.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

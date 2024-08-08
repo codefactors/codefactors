@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Codefactors.Utilities\Codefactors.Utilities.csproj" />
+    <ProjectReference Include="..\Codefactors.Utilities\Codefactors.Authentication.csproj" />
   </ItemGroup>
 
 </Project>
