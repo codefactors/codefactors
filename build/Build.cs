@@ -105,6 +105,7 @@ class Build : NukeBuild
 
     Target Pack => _ => _
         .DependsOn(Test)
+        .OnlyWhenDynamic(() => GitRepository.Tags.Count > 0 || IsLocalBuild)
         .Executes(() =>
         {
             DotNetPack(s => s
@@ -120,6 +121,7 @@ class Build : NukeBuild
         .Requires(() => NugetApiKey)
         .Requires(() => NugetApiUrl)
         .DependsOn(Pack)
+        .OnlyWhenDynamic(() => GitRepository.Tags.Count > 0 || IsLocalBuild)
         .Executes(() =>
         {
             var packageFiles = ArtifactsDirectory
@@ -141,8 +143,7 @@ class Build : NukeBuild
         .Executes(async () =>
         {
             var message = // GitRepository.IsOnMainOrMasterBranch() ?
-            $"Payetools version deployed to Nuget (MinVer.FileVersion = {MinVer.FileVersion})";
-            //"Payetools not published; not on main branch";
+            $"New Codefactors libraries version deployed to Nuget (MinVer.FileVersion = {MinVer.FileVersion})";
 
             await SendSlackMessageAsync(_ => _
                     .SetText(message),
