@@ -11,15 +11,32 @@ using System.Text.Encodings.Web;
 
 namespace Codefactors.Authentication.Basic;
 
+/// <summary>
+/// Basic authentication scheme handler.
+/// </summary>
 public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthenticationSchemeOptions>
 {
     private const string _Scheme = "Basic";
+
+    /// <summary>
+    /// Gets or sets the <see cref="BasicAuthenticationSchemeEvents"/>.
+    /// </summary>
+    /// <remarks>
+    /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
+    /// If it is not provided a default instance is supplied which does nothing when the methods are called.
+    /// </remarks>
     public new BasicAuthenticationSchemeEvents Events
     {
         get => (BasicAuthenticationSchemeEvents)base.Events!;
         set => base.Events = value;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BasicAuthenticationSchemeHandler"/> class.
+    /// </summary>
+    /// <param name="options">The monitor for the options instance.</param>
+    /// <param name="logger">The <see cref="ILoggerFactory"/>.</param>
+    /// <param name="encoder">The <see cref="System.Text.Encodings.Web.UrlEncoder"/>.</param>
     public BasicAuthenticationSchemeHandler(
         IOptionsMonitor<BasicAuthenticationSchemeOptions> options,
         ILoggerFactory logger,
@@ -28,21 +45,30 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
     {
     }
 
+    /// <summary>
+    /// Method that handles authentication.
+    /// </summary>
+    /// <returns>The <see cref="AuthenticateResult"/>.</returns>
+    /// <exception cref="Exception">Thrown.</exception>
+    /// <exception cref="NotImplementedException">Thrown if.</exception>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        string authorizationHeader = Request.Headers["Authorization"];
+        var authorizationHeader = Request.Headers["Authorization"];
         if (string.IsNullOrEmpty(authorizationHeader))
         {
             return AuthenticateResult.NoResult();
         }
-        if (_Scheme == authorizationHeader)
+
+        if (authorizationHeader == _Scheme)
         {
             const string noCredentialsMessage = "Authorization scheme was Basic but the header had no credentials.";
             Logger.LogInformation(noCredentialsMessage);
             return AuthenticateResult.Fail(noCredentialsMessage);
         }
-        string encodedCredentials = authorizationHeader.Substring(_Scheme.Length).Trim();
-        //string decodedCredentials = string.Empty;
+
+        string encodedCredentials = authorizationHeader.ToString().Substring(_Scheme.Length).Trim();
+
+        // string decodedCredentials = string.Empty;
         byte[] base64DecodedCredentials;
         try
         {
@@ -72,7 +98,7 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
         if (validateCredentialsContext.Result != null &&
             validateCredentialsContext.Result.Succeeded)
         {
-            var ticket = new AuthenticationTicket(validateCredentialsContext.Principal, Scheme.Name);
+            var ticket = new AuthenticationTicket(validateCredentialsContext.Principal ?? throw new Exception(), Scheme.Name);
             return AuthenticateResult.Success(ticket);
         }
 

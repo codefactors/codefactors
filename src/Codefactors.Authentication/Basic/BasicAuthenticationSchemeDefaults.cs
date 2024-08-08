@@ -6,7 +6,13 @@
 
 namespace Codefactors.Authentication.Basic;
 
-public class BasicAuthenticationSchemeDefaults
+/// <summary>
+/// Basic authentication scheme defaults.
+/// </summary>
+public static class BasicAuthenticationSchemeDefaults
 {
+    /// <summary>
+    /// Gets the name of authentication scheme.
+    /// </summary>
     public const string AuthenticationScheme = "BasicAuth";
 }

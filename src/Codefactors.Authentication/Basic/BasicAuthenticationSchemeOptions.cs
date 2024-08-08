@@ -8,8 +8,12 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace Codefactors.Authentication.Basic;
 
+/// <summary>
+/// Basic authentication scheme options.
+/// </summary>
 public class BasicAuthenticationSchemeOptions : AuthenticationSchemeOptions
 {
+    /// <summary>Gets or sets the Events.</summary>
     public new BasicAuthenticationSchemeEvents Events
     {
         get => (BasicAuthenticationSchemeEvents)base.Events!;
