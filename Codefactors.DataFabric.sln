@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{978F5208-A533-4385-8909-53B3D9176D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueExample", "example\VueExample\VueExample.csproj", "{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueExample", "example\VueExample\VueExample.csproj", "{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "datafabric-ts", "src\datafabric-ts\datafabric.esproj", "{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "datafabric", "src\datafabric-ts\datafabric.esproj", "{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codefactors.Utilities", "src\Codefactors.Utilities\Codefactors.Utilities.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Utilities", "src\Codefactors.Utilities\Codefactors.Utilities.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,14 +44,10 @@ Global
 		{7464806D-8786-4423-A684-123D89C94BF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7464806D-8786-4423-A684-123D89C94BF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Debug|Any CPU.Build.0 = Debug|Any CPU
