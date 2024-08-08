@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Codefactors.DataFabric\Codefactors.DataFabric.csproj" />
+    <ProjectReference Include="..\Codefactors.Utilities\Codefactors.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

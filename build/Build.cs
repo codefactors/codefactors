@@ -1,6 +1,6 @@
-// Copyright (c) 2023-2024, Payetools Foundation.
+// Copyright (c) 2024, Codefactors Ltd.
 //
-// Payetools Foundation licenses this file to you under the following license(s):
+// Codefactors Ltd licenses this file to you under the following license(s):
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
@@ -15,7 +15,6 @@ using Nuke.Common.Tools.Slack;
 using Nuke.Common.Utilities.Collections;
 using System;
 using System.Linq;
-using System.Reflection;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Slack.SlackTasks;
 
@@ -125,7 +124,7 @@ class Build : NukeBuild
         {
             var packageFiles = ArtifactsDirectory
                 .GlobFiles("*.nupkg")
-                .Where(x => !x.ToString().EndsWith("symbols.nupkg") && !x.ToString().Contains("Payetools.Testing"))
+                .Where(x => !x.ToString().EndsWith("symbols.nupkg") && !x.ToString().Contains("Codefactors.Testing"))
                 .ToList();
 
             packageFiles.ForEach(p =>

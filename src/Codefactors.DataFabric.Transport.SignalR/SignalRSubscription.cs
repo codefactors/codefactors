@@ -4,6 +4,8 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.DataFabric.Subscriptions;
+
 namespace Codefactors.DataFabric.Transport.SignalR;
 
 public class SignalRSubscription(string subscriptionPath, string subscriptionKey, IDataFabricTransport transport) : ISubscription

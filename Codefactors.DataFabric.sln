@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueExample", "example\VueEx
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "datafabric-ts", "src\datafabric-ts\datafabric.esproj", "{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codefactors.Utilities", "src\Codefactors.Utilities\Codefactors.Utilities.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041CC74D-15A6-44C0-9360-4DFEB8A0D915}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{A5E41EE6-6C59-4A95-9465-CC687BB237CE} = {30AF8DFA-FB90-487A-AA01-43712DBFADC7}
 		{F5044E98-4DD1-4B94-B8E5-EC0090BF2CF5} = {978F5208-A533-4385-8909-53B3D9176D4E}
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
+		{041CC74D-15A6-44C0-9360-4DFEB8A0D915} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4096FE9-E7DD-4E5D-BC35-11D5E0219E55}
