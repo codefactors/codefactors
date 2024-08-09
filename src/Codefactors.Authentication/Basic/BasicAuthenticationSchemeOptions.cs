@@ -11,12 +11,12 @@ namespace Codefactors.Authentication.Basic;
 /// <summary>
 /// Basic authentication scheme options.
 /// </summary>
-public class ApikeyAuthenticationSchemeOptions : AuthenticationSchemeOptions
+public class BasicAuthenticationSchemeOptions : AuthenticationSchemeOptions
 {
     /// <summary>Gets or sets the Events.</summary>
-    public new ApikeyAuthenticationSchemeEvents Events
+    public new BasicAuthenticationSchemeEvents Events
     {
-        get => (ApikeyAuthenticationSchemeEvents)base.Events!;
+        get => (BasicAuthenticationSchemeEvents)base.Events!;
         set => base.Events = value;
     }
 }

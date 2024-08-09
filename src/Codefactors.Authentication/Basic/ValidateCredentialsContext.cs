@@ -18,8 +18,8 @@ namespace Codefactors.Authentication.Basic;
 public class ValidateCredentialsContext(
     HttpContext context,
     AuthenticationScheme scheme,
-    ApikeyAuthenticationSchemeOptions options,
-    string[] credentials) : ResultContext<ApikeyAuthenticationSchemeOptions>(context, scheme, options)
+    BasicAuthenticationSchemeOptions options,
+    string[] credentials) : ResultContext<BasicAuthenticationSchemeOptions>(context, scheme, options)
 {
     /// <summary>
     /// Gets the credentials.

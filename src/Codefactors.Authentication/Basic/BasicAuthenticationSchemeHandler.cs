@@ -14,7 +14,7 @@ namespace Codefactors.Authentication.Basic;
 /// <summary>
 /// Basic authentication scheme handler.
 /// </summary>
-public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAuthenticationSchemeOptions>
+public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthenticationSchemeOptions>
 {
     private const string _Scheme = "basic";
     private const string _BearerScheme = "bearer ";
@@ -22,26 +22,26 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
     private const string _ApikeyScheme = "apikey ";
 
     /// <summary>
-    /// Gets or sets the <see cref="ApikeyAuthenticationSchemeEvents"/>.
+    /// Gets or sets the <see cref="BasicAuthenticationSchemeEvents"/>.
     /// </summary>
     /// <remarks>
     /// The handler calls methods on the events which give the application control at certain points where processing is occurring.
     /// If it is not provided a default instance is supplied which does nothing when the methods are called.
     /// </remarks>
-    public new ApikeyAuthenticationSchemeEvents Events
+    public new BasicAuthenticationSchemeEvents Events
     {
-        get => (ApikeyAuthenticationSchemeEvents)base.Events!;
+        get => (BasicAuthenticationSchemeEvents)base.Events!;
         set => base.Events = value;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ApikeyAuthenticationSchemeHandler"/> class.
+    /// Initializes a new instance of the <see cref="BasicAuthenticationSchemeHandler"/> class.
     /// </summary>
     /// <param name="options">The monitor for the options instance.</param>
     /// <param name="logger">The <see cref="ILoggerFactory"/>.</param>
     /// <param name="encoder">The <see cref="System.Text.Encodings.Web.UrlEncoder"/>.</param>
-    public ApikeyAuthenticationSchemeHandler(
-        IOptionsMonitor<ApikeyAuthenticationSchemeOptions> options,
+    public BasicAuthenticationSchemeHandler(
+        IOptionsMonitor<BasicAuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder)
         : base(options, logger, encoder)
@@ -56,25 +56,20 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
     /// <exception cref="NotImplementedException">Thrown if.</exception>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var authorizationHeader = Request.Headers.Authorization;
+        var authorizationHeader = Request.Headers.Authorization.ToString();
 
-        if (string.IsNullOrEmpty(authorizationHeader))
+        if (string.IsNullOrEmpty(authorizationHeader) ||
+            !authorizationHeader.StartsWith(AuthorizationSchemes.Basic, StringComparison.OrdinalIgnoreCase))
             return AuthenticateResult.NoResult();
 
-        // Check if another scheme and abandon this auth
-        if (authorizationHeader.ToString().StartsWith(_BearerScheme) ||
-            authorizationHeader.ToString().StartsWith(_DigestScheme) ||
-            authorizationHeader.ToString().StartsWith(_ApikeyScheme))
-                return AuthenticateResult.NoResult();
-
-        if (authorizationHeader == _Scheme)
+        if (authorizationHeader == _Scheme.Trim())
         {
             const string noCredentialsMessage = "Authorization scheme was Basic but the header had no credentials.";
             Logger.LogInformation(noCredentialsMessage);
             return AuthenticateResult.Fail(noCredentialsMessage);
         }
 
-        string encodedCredentials = authorizationHeader.ToString().Substring(_Scheme.Length).Trim();
+        string encodedCredentials = authorizationHeader.Substring(_Scheme.Length).Trim();
 
         // string decodedCredentials = string.Empty;
         byte[] base64DecodedCredentials;

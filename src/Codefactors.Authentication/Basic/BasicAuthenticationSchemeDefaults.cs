@@ -9,7 +9,7 @@ namespace Codefactors.Authentication.Basic;
 /// <summary>
 /// Basic authentication scheme defaults.
 /// </summary>
-public static class ApikeyAuthenticationSchemeDefaults
+public static class BasicAuthenticationSchemeDefaults
 {
     /// <summary>
     /// Gets the name of authentication scheme.

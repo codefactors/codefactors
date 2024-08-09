@@ -95,7 +95,7 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
             throw new Exception("Bad");
         }
 
-        var validateCredentialsContext = new ValidateApikeyContext(Context, Scheme, Options, parts);
+        var validateCredentialsContext = new ValidateApikeyContext(Context, Scheme, Options, parts[0]);
 
         await Events.ValidateCredentials(validateCredentialsContext);
 

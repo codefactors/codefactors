@@ -13,5 +13,10 @@ namespace Codefactors.Authentication.Extensions;
 /// </summary>
 public static class AuthenticationBuilderExtensions
 {
-    public static AuthenticationBuilder AddBasicScheme
+    /// <summary>
+    /// Adds the basic authentication scheme.
+    /// </summary>
+    /// <param name="builder">Builder to add scheme to.</param>
+    /// <returns>Builder.</returns>
+    public static AuthenticationBuilder AddBasicScheme(this AuthenticationBuilder builder) => builder;
 }

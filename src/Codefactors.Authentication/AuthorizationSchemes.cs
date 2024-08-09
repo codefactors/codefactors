@@ -24,6 +24,4 @@ public static class AuthorizationSchemes
 
     /// <summary>Apikey authentication.</summary>
     public const string ApikeyScheme = "apikey ";
-
-
 }

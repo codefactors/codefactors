@@ -9,7 +9,7 @@ namespace Codefactors.Authentication.Basic;
 /// <summary>
 /// Basic authentication scheme events.
 /// </summary>
-public class ApikeyAuthenticationSchemeEvents
+public class BasicAuthenticationSchemeEvents
 {
     /// <summary>
     /// Gets or sets the delegate that is called when validating credentials.
