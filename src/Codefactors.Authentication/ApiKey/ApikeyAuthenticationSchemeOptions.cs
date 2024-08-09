@@ -6,10 +6,10 @@
 
 using Microsoft.AspNetCore.Authentication;
 
-namespace Codefactors.Authentication.Basic;
+namespace Codefactors.Authentication.ApiKey;
 
 /// <summary>
-/// Basic authentication scheme options.
+/// Apikey authentication scheme options.
 /// </summary>
 public class ApikeyAuthenticationSchemeOptions : AuthenticationSchemeOptions
 {

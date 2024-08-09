@@ -6,23 +6,23 @@
 
 using Microsoft.AspNetCore.Authentication;
 
-namespace Codefactors.Authentication.Basic;
+namespace Codefactors.Authentication.ApiKey;
 
 /// <summary>
-/// Context used when validating credentials.
+/// Context used when validating API keys.
 /// </summary>
 /// <param name="context">Context.</param>
 /// <param name="scheme">Scheme.</param>
 /// <param name="options">Options.</param>
-/// <param name="credentials">Credentials.</param>
-public class ValidateCredentialsContext(
+/// <param name="apiKey">Credentials.</param>
+public class ValidateApikeyContext(
     HttpContext context,
     AuthenticationScheme scheme,
     ApikeyAuthenticationSchemeOptions options,
-    string[] credentials) : ResultContext<ApikeyAuthenticationSchemeOptions>(context, scheme, options)
+    string apiKey) : ResultContext<ApikeyAuthenticationSchemeOptions>(context, scheme, options)
 {
     /// <summary>
     /// Gets the credentials.
     /// </summary>
-    public string[] Credentials { get; } = credentials;
+    public string ApiKey { get; } = apiKey;
 }

@@ -4,15 +4,15 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-namespace Codefactors.Authentication.Basic;
+namespace Codefactors.Authentication.ApiKey;
 
 /// <summary>
-/// Basic authentication scheme defaults.
+/// Apikey authentication scheme defaults.
 /// </summary>
 public static class ApikeyAuthenticationSchemeDefaults
 {
     /// <summary>
     /// Gets the name of authentication scheme.
     /// </summary>
-    public const string AuthenticationScheme = "Basic";
+    public const string AuthenticationScheme = "Apikey";
 }

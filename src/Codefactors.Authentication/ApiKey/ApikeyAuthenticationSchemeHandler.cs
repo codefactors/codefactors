@@ -9,17 +9,15 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace Codefactors.Authentication.Basic;
+namespace Codefactors.Authentication.ApiKey;
 
 /// <summary>
 /// Basic authentication scheme handler.
 /// </summary>
 public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAuthenticationSchemeOptions>
 {
-    private const string _Scheme = "basic";
-    private const string _BearerScheme = "bearer ";
-    private const string _DigestScheme = "digest ";
-    private const string _ApikeyScheme = "apikey ";
+    private const string _Scheme = "Basic";
+    private const string _BearerScheme = "Bearer ";
 
     /// <summary>
     /// Gets or sets the <see cref="ApikeyAuthenticationSchemeEvents"/>.
@@ -39,7 +37,7 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
     /// </summary>
     /// <param name="options">The monitor for the options instance.</param>
     /// <param name="logger">The <see cref="ILoggerFactory"/>.</param>
-    /// <param name="encoder">The <see cref="System.Text.Encodings.Web.UrlEncoder"/>.</param>
+    /// <param name="encoder">The <see cref="UrlEncoder"/>.</param>
     public ApikeyAuthenticationSchemeHandler(
         IOptionsMonitor<ApikeyAuthenticationSchemeOptions> options,
         ILoggerFactory logger,
@@ -56,16 +54,14 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
     /// <exception cref="NotImplementedException">Thrown if.</exception>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var authorizationHeader = Request.Headers.Authorization;
-
+        var authorizationHeader = Request.Headers["Authorization"];
         if (string.IsNullOrEmpty(authorizationHeader))
+        {
             return AuthenticateResult.NoResult();
+        }
 
-        // Check if another scheme and abandon this auth
-        if (authorizationHeader.ToString().StartsWith(_BearerScheme) ||
-            authorizationHeader.ToString().StartsWith(_DigestScheme) ||
-            authorizationHeader.ToString().StartsWith(_ApikeyScheme))
-                return AuthenticateResult.NoResult();
+        if (authorizationHeader.ToString().StartsWith(_BearerScheme))
+            return AuthenticateResult.NoResult();
 
         if (authorizationHeader == _Scheme)
         {
@@ -99,7 +95,7 @@ public class ApikeyAuthenticationSchemeHandler : AuthenticationHandler<ApikeyAut
             throw new Exception("Bad");
         }
 
-        var validateCredentialsContext = new ValidateCredentialsContext(Context, Scheme, Options, parts);
+        var validateCredentialsContext = new ValidateApikeyContext(Context, Scheme, Options, parts);
 
         await Events.ValidateCredentials(validateCredentialsContext);
 
