@@ -12,14 +12,24 @@ namespace Codefactors.Authentication.Basic;
 public class BasicAuthenticationSchemeEvents
 {
     /// <summary>
-    /// Gets or sets the delegate that is called when validating credentials.
-    /// </summary>
-    public Func<ValidateCredentialsContext, Task> OnValidateCredentials { get; set; } = default!;
-
-    /// <summary>
     /// Validates the credentials.
     /// </summary>
     /// <param name="context">Validation context.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public virtual Task ValidateCredentials(ValidateCredentialsContext context) => OnValidateCredentials(context);
+    /// <exception cref="InvalidOperationException">Thrown if the credentials validator has not been set.</exception>
+    public virtual async Task ValidateCredentialsAsync(ValidateCredentialsContext context)
+    {
+        if (context.Options.CredentialsValidator == null)
+            throw new InvalidOperationException("CredentialsValidator property on BasicAuthenticationSchemeOptions must be set");
+
+        var validationResult = await context.Options.CredentialsValidator.ValidateAsync(context.Credentials);
+
+        if (context.Principal == null)
+            throw new InvalidOperationException("Credentials were successfully validated but Principal claim was not set");
+
+        if (validationResult.IsValid)
+            context.Success();
+        else
+            context.Fail(validationResult.ValidationData?.ToString() ?? "Invalid credentials");
+    }
 }

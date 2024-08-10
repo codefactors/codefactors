@@ -6,7 +6,6 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using System.Text;
 using System.Text.Encodings.Web;
 
 namespace Codefactors.Authentication.Basic;
@@ -16,10 +15,7 @@ namespace Codefactors.Authentication.Basic;
 /// </summary>
 public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthenticationSchemeOptions>
 {
-    private const string _Scheme = "basic";
-    private const string _BearerScheme = "bearer ";
-    private const string _DigestScheme = "digest ";
-    private const string _ApikeyScheme = "apikey ";
+    private const string _emptyCredentialsText = "Failed to authenticate with basic authentication; reason: header had no credentials";
 
     /// <summary>
     /// Gets or sets the <see cref="BasicAuthenticationSchemeEvents"/>.
@@ -38,13 +34,13 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
     /// Initializes a new instance of the <see cref="BasicAuthenticationSchemeHandler"/> class.
     /// </summary>
     /// <param name="options">The monitor for the options instance.</param>
-    /// <param name="logger">The <see cref="ILoggerFactory"/>.</param>
-    /// <param name="encoder">The <see cref="System.Text.Encodings.Web.UrlEncoder"/>.</param>
+    /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
+    /// <param name="encoder">The <see cref="UrlEncoder"/>.</param>
     public BasicAuthenticationSchemeHandler(
         IOptionsMonitor<BasicAuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
+        ILoggerFactory loggerFactory,
         UrlEncoder encoder)
-        : base(options, logger, encoder)
+        : base(options, loggerFactory, encoder)
     {
     }
 
@@ -52,8 +48,8 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
     /// Method that handles authentication.
     /// </summary>
     /// <returns>The <see cref="AuthenticateResult"/>.</returns>
-    /// <exception cref="Exception">Thrown.</exception>
-    /// <exception cref="NotImplementedException">Thrown if.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="ICredentialsValidator"/> fails
+    /// to set the Principal claim.</exception>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var authorizationHeader = Request.Headers.Authorization.ToString();
@@ -62,56 +58,43 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
             !authorizationHeader.StartsWith(AuthorizationSchemes.Basic, StringComparison.OrdinalIgnoreCase))
             return AuthenticateResult.NoResult();
 
-        if (authorizationHeader == _Scheme.Trim())
+        if (authorizationHeader.TrimEnd() == AuthorizationSchemes.Basic.TrimEnd())
         {
-            const string noCredentialsMessage = "Authorization scheme was Basic but the header had no credentials.";
-            Logger.LogInformation(noCredentialsMessage);
-            return AuthenticateResult.Fail(noCredentialsMessage);
+            Logger.LogWarning(_emptyCredentialsText);
+
+            return AuthenticateResult.Fail(_emptyCredentialsText);
         }
 
-        string encodedCredentials = authorizationHeader.Substring(_Scheme.Length).Trim();
-
-        // string decodedCredentials = string.Empty;
-        byte[] base64DecodedCredentials;
         try
         {
-            base64DecodedCredentials = Convert.FromBase64String(encodedCredentials);
+            var credentials = new BasicAuthenticationCredentials(authorizationHeader.Substring(AuthorizationSchemes.Basic.Length).Trim());
+
+            var validateCredentialsContext = new ValidateCredentialsContext(Context, Scheme, Options, credentials);
+
+            await Events.ValidateCredentialsAsync(validateCredentialsContext);
+
+            if (validateCredentialsContext.Result != null)
+            {
+                if (validateCredentialsContext.Result.Succeeded)
+                    return AuthenticateResult.Success(new AuthenticationTicket(validateCredentialsContext.Principal!, Scheme.Name));
+
+                if (validateCredentialsContext.Result.Failure != null)
+                    return AuthenticateResult.Fail(validateCredentialsContext.Result.Failure);
+            }
+
+            return AuthenticateResult.NoResult();
         }
-        catch (FormatException)
+        catch (ArgumentException ex)
         {
-            const string failedToDecodeCredentials = "Cannot convert credentials from Base64.";
-            Logger.LogInformation(failedToDecodeCredentials);
-            return AuthenticateResult.Fail(failedToDecodeCredentials);
+            Logger.LogWarning(ex, "Failed to authenticate with basic authentication; reason: {message}", ex.Message);
+
+            return AuthenticateResult.Fail(ex.Message);
         }
-
-        var utf8ValidatingEncoding = new UTF8Encoding(false, true);
-        var decodedCredentials = utf8ValidatingEncoding.GetString(base64DecodedCredentials);
-
-        var parts = decodedCredentials.Split(':');
-
-        if (parts.Length != 2)
+        catch (InvalidOperationException ex)
         {
-            throw new Exception("Bad");
+            Logger.LogError(ex, "Invalid operation when attempting basic authentication; details: {message}", ex.Message);
+
+            return AuthenticateResult.Fail(ex.Message);
         }
-
-        var validateCredentialsContext = new ValidateCredentialsContext(Context, Scheme, Options, parts);
-
-        await Events.ValidateCredentials(validateCredentialsContext);
-
-        if (validateCredentialsContext.Result != null &&
-            validateCredentialsContext.Result.Succeeded)
-        {
-            var ticket = new AuthenticationTicket(validateCredentialsContext.Principal ?? throw new Exception(), Scheme.Name);
-            return AuthenticateResult.Success(ticket);
-        }
-
-        if (validateCredentialsContext.Result != null &&
-            validateCredentialsContext.Result.Failure != null)
-        {
-            return AuthenticateResult.Fail(validateCredentialsContext.Result.Failure);
-        }
-
-        return AuthenticateResult.NoResult();
-        throw new NotImplementedException();
     }
 }

@@ -19,10 +19,16 @@ public class ValidateCredentialsContext(
     HttpContext context,
     AuthenticationScheme scheme,
     BasicAuthenticationSchemeOptions options,
-    string[] credentials) : ResultContext<BasicAuthenticationSchemeOptions>(context, scheme, options)
+    BasicAuthenticationCredentials credentials)
+    : ResultContext<BasicAuthenticationSchemeOptions>(context, scheme, options)
 {
     /// <summary>
     /// Gets the credentials.
     /// </summary>
-    public string[] Credentials { get; } = credentials;
+    public BasicAuthenticationCredentials Credentials { get; } = credentials;
+
+    /// <summary>
+    /// Gets or sets any validation data generated from the validation process. Optional.
+    /// </summary>
+    public object? ValidationData { get; set; }
 }

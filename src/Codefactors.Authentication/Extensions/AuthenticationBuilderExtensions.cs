@@ -4,6 +4,7 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.Authentication.Basic;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Codefactors.Authentication.Extensions;
@@ -17,6 +18,15 @@ public static class AuthenticationBuilderExtensions
     /// Adds the basic authentication scheme.
     /// </summary>
     /// <param name="builder">Builder to add scheme to.</param>
+    /// <param name="configureOptions">Method to configure basic authentication options.</param>
     /// <returns>Builder.</returns>
-    public static AuthenticationBuilder AddBasicScheme(this AuthenticationBuilder builder) => builder;
+    public static AuthenticationBuilder AddBasicScheme(this AuthenticationBuilder builder, Action<BasicAuthenticationSchemeOptions> configureOptions)
+    {
+        builder.AddScheme<BasicAuthenticationSchemeOptions, BasicAuthenticationSchemeHandler>(
+            BasicAuthenticationSchemeDefaults.AuthenticationScheme,
+            "Basic Authentication",
+            configureOptions);
+
+        return builder;
+    }
 }
