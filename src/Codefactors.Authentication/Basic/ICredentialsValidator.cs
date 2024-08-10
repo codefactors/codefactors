@@ -14,7 +14,10 @@ public interface ICredentialsValidator
     /// <summary>
     /// Validates the supplied credentials.
     /// </summary>
-    /// <param name="credentials">Basic authentication credentials to be validated.</param>
+    /// <param name="credentialsContext">Basic authentication credentials context to be validated.</param>
     /// <returns><see cref="IValidationResult"/> with IsValid set to true if the credentials are valid.</returns>
-    Task<IValidationResult> ValidateAsync(BasicAuthenticationCredentials credentials);
+    /// <remarks>Principal claim on supplied <see cref="ValidateCredentialsContext"/> must be populated if
+    /// credentials are successfully validated.
+    /// </remarks>
+    Task<IValidationResult> ValidateAsync(ValidateCredentialsContext credentialsContext);
 }

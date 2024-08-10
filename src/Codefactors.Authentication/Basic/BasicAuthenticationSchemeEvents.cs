@@ -22,7 +22,7 @@ public class BasicAuthenticationSchemeEvents
         if (context.Options.CredentialsValidator == null)
             throw new InvalidOperationException("CredentialsValidator property on BasicAuthenticationSchemeOptions must be set");
 
-        var validationResult = await context.Options.CredentialsValidator.ValidateAsync(context.Credentials);
+        var validationResult = await context.Options.CredentialsValidator.ValidateAsync(context);
 
         if (context.Principal == null)
             throw new InvalidOperationException("Credentials were successfully validated but Principal claim was not set");
