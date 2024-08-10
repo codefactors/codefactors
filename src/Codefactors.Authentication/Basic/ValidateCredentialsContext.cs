@@ -11,9 +11,9 @@ namespace Codefactors.Authentication.Basic;
 /// <summary>
 /// Context used when validating credentials.
 /// </summary>
-/// <param name="context">Context.</param>
-/// <param name="scheme">Scheme.</param>
-/// <param name="options">Options.</param>
+/// <param name="context">HTTP context.</param>
+/// <param name="scheme">Authentication scheme.</param>
+/// <param name="options">Basic authentication options.</param>
 /// <param name="credentials">Credentials.</param>
 public class ValidateCredentialsContext(
     HttpContext context,
