@@ -5,8 +5,13 @@
 //   * The MIT License, see https://opensource.org/license/mit/
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Security.Claims;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace Codefactors.Authentication.Jwt.Clerk;
 
@@ -18,6 +23,8 @@ public static class ClerkJwtBearerOptions
 {
     private const string ClerkAuthorityKey = "Clerk:Authority";
     private const string ClerkAuthorizedPartiesKey = "Clerk:AuthorizedParties";
+
+    private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
     /// <summary>
     /// Updates the supplied <see cref="JwtBearerOptions"/> instance with the necessary settings to support
@@ -54,23 +61,7 @@ public static class ClerkJwtBearerOptions
             NameClaimType = ClaimTypes.NameIdentifier
         };
 
-        options.Events = new JwtBearerEvents()
-        {
-            // Additional validation for AZP claim
-            OnTokenValidated = context =>
-            {
-                var azpClaim = context.Principal?.FindFirstValue("azp");
-
-                // AuthorizedParty is the base URL of our frontend.
-                if (string.IsNullOrEmpty(azpClaim))
-                    context.Fail("AZP Claim is missing");
-
-                if (!authorizedParties.Contains(azpClaim))
-                    context.Fail("AZP Claim is invalid");
-
-                return Task.CompletedTask;
-            }
-        };
+        options.Events = new ClerkJwtBearerEvents(authorizedParties);
 
         return options;
     }
