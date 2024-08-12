@@ -5,9 +5,7 @@
 //   * The MIT License, see https://opensource.org/license/mit/
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Net.Sockets;
 using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Codefactors.Authentication.Jwt.Clerk;
 
@@ -16,6 +14,8 @@ namespace Codefactors.Authentication.Jwt.Clerk;
 /// </summary>
 public class ClerkJwtBearerEvents : JwtBearerEvents
 {
+    private const string AuthorisedPartiesClaim = "azp";
+
     /// <summary>
     /// Events processor for Clerk JWT bearer token processing.
     /// </summary>
@@ -24,30 +24,34 @@ public class ClerkJwtBearerEvents : JwtBearerEvents
     {
         OnTokenValidated = context =>
         {
-            var azpClaim = context.Principal?.FindFirstValue("azp");
+            var azpClaim = context.Principal?.FindFirstValue(AuthorisedPartiesClaim);
 
             // AuthorizedParty is the base URL of our frontend.
             if (string.IsNullOrEmpty(azpClaim))
-                context.Fail("AZP Claim is missing");
+                context.Fail("AZP (authorised parties) claim is missing");
 
             if (!authorisedParties.Contains(azpClaim))
-                context.Fail("AZP Claim is invalid");
+                context.Fail("AZP (authorised parties) claim is invalid");
 
             if (context.Result?.Failure == null)
-                ProcessMetadata(context);
+                ProcessMetadataClaimIfPresent(context);
 
             return Task.CompletedTask;
         };
     }
 
-    private static Task ProcessMetadata(TokenValidatedContext content)
+    private static Task ProcessMetadataClaimIfPresent(TokenValidatedContext content)
     {
-        var context = content.HttpContext;
+        if (content.Principal is ClaimsPrincipal principal &&
+            ClerkMetadataClaim.TryGetClaim(principal, out var claim) &&
+            ClerkMetadataClaim.TryDeserialise(claim, out var metadata) &&
+            principal.Identity is ClaimsIdentity currentClaims)
+        {
+            if (metadata.Role != null)
+                currentClaims.AddClaim(new Claim(ClaimTypes.Role, metadata.Role));
 
-        var metadata = ClerkMetadataClaim.DeserialiseMetadataClaim(context.User.Claims);
-
-        if (metadata != null && metadata.Role != null)
-            (content.Principal?.Identity as ClaimsIdentity)?.AddClaim(new Claim(ClaimTypes.Role, metadata.Role));
+            currentClaims.RemoveClaim(claim);
+        }
 
         return Task.CompletedTask;
     }
