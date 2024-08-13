@@ -24,12 +24,16 @@ public class BasicAuthenticationSchemeEvents
 
         var validationResult = await context.Options.CredentialsValidator.ValidateAsync(context);
 
-        if (context.Principal == null)
-            throw new InvalidOperationException("Credentials were successfully validated but Principal claim was not set");
-
         if (validationResult.IsValid)
+        {
+            if (context.Principal == null)
+                throw new InvalidOperationException("Credentials were successfully validated but Principal claim was not set");
+
             context.Success();
+        }
         else
+        {
             context.Fail(validationResult.ValidationData?.ToString() ?? "Invalid credentials");
+        }
     }
 }
