@@ -12,22 +12,22 @@ namespace Codefactors.DataFabric.Transport.SignalR;
 /// <summary>
 /// SignalR notification hub for sending notifications to clients over the SignalR data fabric transport.
 /// </summary>
-public class NotificationHub : Hub
+public class DataFabricNotificationHub : Hub
 {
     private readonly ISubscriptionManager _subscriptionManager;
-    private readonly ILogger<NotificationHub> _logger;
+    private readonly ILogger<DataFabricNotificationHub> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="NotificationHub"/> class.
+    /// Initializes a new instance of the <see cref="DataFabricNotificationHub"/> class.
     /// </summary>
     /// <param name="subscriptionManager">Subscription manager.</param>
     /// <param name="logger">Logger.</param>
-    public NotificationHub(ISubscriptionManager subscriptionManager, ILogger<NotificationHub> logger)
+    public DataFabricNotificationHub(ISubscriptionManager subscriptionManager, ILogger<DataFabricNotificationHub> logger)
     {
         _subscriptionManager = subscriptionManager;
         _logger = logger;
 
-        _logger.LogInformation("NotificationHub created");
+        _logger.LogInformation("DataFabricNotificationHub created");
     }
 
     /// <summary>
@@ -37,7 +37,9 @@ public class NotificationHub : Hub
     public async override Task OnConnectedAsync()
     {
         _logger.LogInformation("Connected");
+
         await base.OnConnectedAsync();
+
         await Clients.Caller.SendAsync("Message", "Connected successfully!");
     }
 

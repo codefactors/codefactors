@@ -13,13 +13,13 @@ namespace Codefactors.DataFabric.Transport.SignalR;
 /// </summary>
 public class SignalRTransport : IDataFabricTransport
 {
-    private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IHubContext<DataFabricNotificationHub> _hubContext;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SignalRTransport"/> class.
     /// </summary>
     /// <param name="hubContext">SignalR hub context.</param>
-    public SignalRTransport(IHubContext<NotificationHub> hubContext)
+    public SignalRTransport(IHubContext<DataFabricNotificationHub> hubContext)
     {
         _hubContext = hubContext;
     }
