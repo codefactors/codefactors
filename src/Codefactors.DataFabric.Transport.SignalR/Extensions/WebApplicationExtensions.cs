@@ -15,10 +15,13 @@ public static class WebApplicationExtensions
     /// Installs the SignalR middleware that allows WebSocket connections to correctly handle
     /// authentication (as WebSockets don't support HTTP headers).
     /// </summary>
-    /// <param name="webApplication">This <see cref="WebApplication"/> instance.</param>
+    /// <param name="app">This <see cref="WebApplication"/> instance.</param>
+    /// <param name="configuration">Configuration to get access to the hub path.</param>
     /// <returns>Original <see cref="WebApplication"/> instance.</returns>
-    public static WebApplication UseSignalRAuthenticationMiddleware(this WebApplication webApplication)
+    public static WebApplication UseSignalRAuthenticationMiddleware(this WebApplication app, ConfigurationManager configuration)
     {
-        return webApplication;
+        app.UseMiddleware<SignalRAuthenticationMiddleware>(DataFabricConfiguration.GetSignalRHubPath(configuration));
+
+        return app;
     }
 }
