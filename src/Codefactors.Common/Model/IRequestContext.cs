@@ -4,11 +4,15 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-namespace Codefactors.DataFabric;
+namespace Codefactors.Common.Model;
 
 /// <summary>
 /// Interface that provides access to the request context.
 /// </summary>
 public interface IRequestContext
 {
+    /// <summary>
+    /// Gets the id for the user of this request.
+    /// </summary>
+    object UserId { get; }
 }

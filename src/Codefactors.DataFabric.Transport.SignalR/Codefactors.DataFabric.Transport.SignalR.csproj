@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Codefactors.Common\Codefactors.Common.csproj" />
     <ProjectReference Include="..\Codefactors.DataFabric\Codefactors.DataFabric.csproj" />
     <ProjectReference Include="..\Codefactors.Authentication\Codefactors.Authentication.csproj" />
   </ItemGroup>

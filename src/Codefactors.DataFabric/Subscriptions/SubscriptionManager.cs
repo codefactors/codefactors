@@ -4,6 +4,7 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.Common.Model;
 using Codefactors.DataFabric.Diagnostics;
 using Codefactors.DataFabric.Reflection;
 using System.Collections.Concurrent;

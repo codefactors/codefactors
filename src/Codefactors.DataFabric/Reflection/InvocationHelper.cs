@@ -4,8 +4,9 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-using System.Reflection;
+using Codefactors.Common.Model;
 using Codefactors.DataFabric.Subscriptions;
+using System.Reflection;
 
 namespace Codefactors.DataFabric.Reflection;
 
@@ -64,7 +65,8 @@ public class InvocationHelper(ISubscriptionDataSource subscriptionDataSource, ID
                 }
                 else
                 {
-                    throw new ArgumentException($"Missing parameter '{parameterName}'");
+                    if (!methodParameters[i].HasDefaultValue)
+                        throw new ArgumentException($"Missing parameter '{parameterName}'");
                 }
             }
         }
@@ -88,6 +90,8 @@ public class InvocationHelper(ISubscriptionDataSource subscriptionDataSource, ID
         return true switch
         {
             true when type == typeof(Guid) => Guid.TryParse(value, out var guid) ? guid : throw new FormatException($"Parameter cannot be coerced to GUID, invalid format '{value}'"),
+            true when type == typeof(int) => int.TryParse(value, out var intValue) ? intValue : throw new FormatException($"Parameter cannot be coerced to int, invalid format '{value}'"),
+            true when type == typeof(DateTime) => DateTime.TryParse(value, out var date) ? date : throw new FormatException($"Parameter cannot be coerced to DateTime, invalid format '{value}'"),
             _ => value,
         };
     }

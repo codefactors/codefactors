@@ -4,6 +4,8 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.Common.Model;
+
 namespace Codefactors.DataFabric.Subscriptions;
 
 /// <summary>
