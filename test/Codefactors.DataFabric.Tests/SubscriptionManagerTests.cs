@@ -42,19 +42,22 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
 
         var result = await manager.AddSubscriptionAsync(
             new RequestContext("user_2hSSGlTnDZZuAyd2I0sOKYyhI9M.sess_2hVkIPElDgWGXoeGSapN4ntLMdV"),
-            path);
+            path,
+            []);
 
         result.Should().Be("some employee");
 
         var result2 = await manager.AddSubscriptionAsync(
             new RequestContext("user_3hSSGlTnDZZuAyd2I0sOKYyhI9M.sess_2hVkIPElDgWGXoeGSapN4ntLMdX"),
-            path);
+            path,
+            []);
 
         result2.Should().Be("some employee");
 
         var result3 = await manager.AddSubscriptionAsync(
             new RequestContext("user_3hSSGlTnDZZuAyd2I0sOKYyhI9M.sess_2hVkIPElDgWGXoeGSapN4ntLMdX"),
-            path2);
+            path2,
+            []);
 
         result3.Should().Be("some employer");
 
@@ -91,7 +94,8 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
 
         Func<Task> act = async () => await manager.AddSubscriptionAsync(
             new RequestContext("user_2hSSGlTnDZZuAyd2I0sOKYyhI9M.sess_2hVkIPElDgWGXoeGSapN4ntLMdV"),
-            path);
+            path,
+            []);
 
         await act.Should().ThrowAsync<SubscriptionException>()
             .WithMessage("Invalid value 'hampster' for parameter 'employerId'");

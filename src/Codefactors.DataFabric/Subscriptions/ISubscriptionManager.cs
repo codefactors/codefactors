@@ -5,6 +5,7 @@
 //   * The MIT License, see https://opensource.org/license/mit/
 
 using Codefactors.Common.Model;
+using Microsoft.Extensions.Primitives;
 
 namespace Codefactors.DataFabric.Subscriptions;
 
@@ -18,8 +19,12 @@ public interface ISubscriptionManager
     /// </summary>
     /// <param name="requestContext">Request context.</param>
     /// <param name="path">Subscription path.</param>
+    /// <param name="queryParameters">Array containing query parameters as key/value pairs. May be empty.</param>
     /// <returns>Current data for the subscription.</returns>
-    Task<object> AddSubscriptionAsync(IRequestContext requestContext, string path);
+    Task<object> AddSubscriptionAsync(
+        IRequestContext requestContext,
+        string path,
+        IEnumerable<KeyValuePair<string, StringValues>> queryParameters);
 
     /// <summary>
     /// Removes a subscription.
