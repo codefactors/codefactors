@@ -40,5 +40,5 @@ public interface ISubscriptionManager
     /// <param name="path">Subscription path.</param>
     /// <param name="update">Update content.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task NotifySubscribersAsync(string path, object update);
+    Task NotifySubscribersAsync(string path, DataFabricUpdate update);
 }

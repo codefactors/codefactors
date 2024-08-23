@@ -61,13 +61,13 @@ public class SubscriptionManagerTests(ITestOutputHelper outputHelper)
 
         result3.Should().Be("some employer");
 
-        await manager.NotifySubscribersAsync(path, new { Message = "Hello, World!" });
-        await manager.NotifySubscribersAsync(path2, new { Message = "Hello, World 2!" });
+        await manager.NotifySubscribersAsync(path, new DataFabricUpdate(new { Message = "Hello, World!" }, UpdateType.ItemUpdate));
+        await manager.NotifySubscribersAsync(path2, new DataFabricUpdate(new { Message = "Hello, World 2!" }, UpdateType.ItemUpdate));
 
         updates.Count.Should().Be(3);
-        updates.Pop().Should().BeEquivalentTo(new { Message = "Hello, World 2!" });
-        updates.Pop().Should().BeEquivalentTo(new { Message = "Hello, World!" });
-        updates.Pop().Should().BeEquivalentTo(new { Message = "Hello, World!" });
+        updates.Pop().Should().BeEquivalentTo(new DataFabricUpdate(new { Message = "Hello, World 2!" }, UpdateType.ItemUpdate));
+        updates.Pop().Should().BeEquivalentTo(new DataFabricUpdate(new { Message = "Hello, World!" }, UpdateType.ItemUpdate));
+        updates.Pop().Should().BeEquivalentTo(new DataFabricUpdate(new { Message = "Hello, World!" }, UpdateType.ItemUpdate));
     }
 
     [Fact]

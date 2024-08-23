@@ -100,7 +100,7 @@ public class SubscriptionManager(
     /// <param name="path">Subscription path.</param>
     /// <param name="update">Update content.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public async Task NotifySubscribersAsync(string path, object update)
+    public async Task NotifySubscribersAsync(string path, DataFabricUpdate update)
     {
         try
         {
