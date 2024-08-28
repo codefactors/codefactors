@@ -14,31 +14,28 @@ namespace Codefactors.DataFabric.Transport.SignalR;
 /// Helper that provides the user id for SignalR connections.
 /// </summary>
 /// <param name="subscriptionKeyGenerator">Subscription key generator.</param>
-public class SignalRUserIdProvider(ISubscriptionKeyGenerator subscriptionKeyGenerator) : IUserIdProvider
+/// <param name="logger">Logger.</param>
+public class SignalRUserIdProvider(
+    ISubscriptionKeyGenerator subscriptionKeyGenerator,
+    ILogger<IUserIdProvider> logger) : IUserIdProvider
 {
     private readonly ISubscriptionKeyGenerator _subscriptionKeyGenerator = subscriptionKeyGenerator;
+    private readonly ILogger _logger = logger;
 
     /// <summary>
     /// Gets the user ID for the specified connection.
     /// </summary>
     /// <param name="connection">The connection to get the user ID for.</param>
     /// <returns>The user ID for the specified connection.</returns>
-    public string GetUserId(HubConnectionContext connection) =>
-        _subscriptionKeyGenerator is IClaimsBasedSubscriptionKeyGenerator generator &&
-        connection.User?.Claims is IEnumerable<Claim> claims ?
-            generator.GenerateKey(claims) :
-            string.Empty;
-}
+    public string GetUserId(HubConnectionContext connection)
+    {
+        var userId = _subscriptionKeyGenerator is IClaimsBasedSubscriptionKeyGenerator generator &&
+            connection.User?.Claims is IEnumerable<Claim> claims ?
+                generator.GenerateKey(claims) :
+                string.Empty;
 
-/// <summary>
-/// Interface for entities that generate subscription keys.
-/// </summary>
-internal interface IClaimsBasedSubscriptionKeyGenerator : ISubscriptionKeyGenerator
-{
-    /// <summary>
-    /// Generates the subscription key for the specified request context.
-    /// </summary>
-    /// <param name="claims">Request context.</param>
-    /// <returns>Subscription key.</returns>
-    string GenerateKey(IEnumerable<Claim> claims);
+        _logger.LogInformation("SignalR UserId = {userId}", userId);
+
+        return userId;
+    }
 }

@@ -20,6 +20,9 @@ public class SignalRSubscription(string subscriptionPath, string subscriptionKey
     private readonly string _subscriptionKey = subscriptionKey;
     private readonly IDataFabricTransport _transport = transport;
 
+    /// <summary>Gets the key for this subscription.</summary>
+    public string Key => _subscriptionKey;
+
     /// <summary>
     /// Notifies the subscription of an update.
     /// </summary>
@@ -40,4 +43,10 @@ public class SignalRSubscription(string subscriptionPath, string subscriptionKey
         other is SignalRSubscription subscription &&
         subscription._subscriptionKey == _subscriptionKey &&
         subscription._subscriptionPath == _subscriptionPath;
+
+    /// <summary>
+    /// Returns the subscription key.
+    /// </summary>
+    /// <returns>Subscription key.</returns>
+    public override string ToString() => _subscriptionKey;
 }

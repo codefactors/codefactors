@@ -11,6 +11,9 @@ namespace Codefactors.DataFabric.Subscriptions;
 /// </summary>
 public interface ISubscription : IEquatable<ISubscription>
 {
+    /// <summary>Gets the key for this subscription.</summary>
+    string Key { get; }
+
     /// <summary>
     /// Notifies the subscription of an update.
     /// </summary>

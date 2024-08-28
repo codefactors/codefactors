@@ -141,6 +141,8 @@ internal class Subscription(string subscriptionKey, Action<object> notification)
 {
     private readonly string _sessionId = subscriptionKey;
 
+    public string Key { get { return _sessionId; } }
+
     public Task NotifyAsync(string subscriptionPath, object update)
     {
         notification(update);

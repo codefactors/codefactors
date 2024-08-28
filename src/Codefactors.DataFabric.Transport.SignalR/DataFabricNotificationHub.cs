@@ -6,6 +6,7 @@
 
 using Codefactors.DataFabric.Subscriptions;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace Codefactors.DataFabric.Transport.SignalR;
 
@@ -36,12 +37,14 @@ public class DataFabricNotificationHub : Hub
     /// <returns>A <see cref="Task"/> that represents the asynchronous connect.</returns>
     public async override Task OnConnectedAsync()
     {
-        _logger.LogInformation("Connected");
+        _logger.LogInformation("Connection id {connectionid} accepted from user {user}", Context.ConnectionId, DumpClaims(Context?.User?.Claims));
 
         await base.OnConnectedAsync();
 
         await Clients.Caller.SendAsync("Message", "Connected successfully!");
     }
+
+    // public async Task SendUpdate()
 
     /// <summary>
     /// Blah method.
@@ -53,4 +56,7 @@ public class DataFabricNotificationHub : Hub
         _logger.LogInformation("Blah called with text " + text);
         await Clients.Caller.SendAsync("Message", "Blah called");
     }
+
+    private string DumpClaims(IEnumerable<Claim>? claims) =>
+        string.Join(", ", claims?.Select(c => $"{c.Type}={c.Value}") ?? []);
 }

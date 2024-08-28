@@ -19,16 +19,22 @@ public static class IServiceCollectionExtensions
     /// </summary>
     /// <param name="services">This <see cref="IServiceCollection"/>.</param>
     /// <param name="initialiseSignalR">Optional parameter; set to false if AddSignalR() is being called elsewhere.</param>
+    /// <typeparam name="T">Type of SignalR hub.</typeparam>
     /// <returns><see cref="IServiceCollection"/> supplied at invocation.</returns>
-    public static IServiceCollection AddSignalRTransport(this IServiceCollection services, bool initialiseSignalR = true)
+    public static IServiceCollection AddSignalRTransport<T>(this IServiceCollection services, bool initialiseSignalR = true)
+        where T : Hub
     {
         // Required to ensure SignalR uses the subscription key rather than the regular user id
+        // services.AddSingleton<IUserIdProvider>(sp => new SignalRUserIdProvider(
+            // sp.GetRequiredService<ISubscriptionKeyGenerator>(),
+            // sp.GetRequiredService<ILogger<IUserIdProvider>>()));
+
         services.AddSingleton<IUserIdProvider, SignalRUserIdProvider>();
 
         if (initialiseSignalR)
             services.AddSignalR();
 
-        services.AddSingleton<IDataFabricTransport, SignalRTransport>();
+        services.AddSingleton<IDataFabricTransport, SignalRTransport<T>>();
         services.AddSingleton<ISubscriptionFactory, SignalRSubscriptionFactory>();
 
         return services;

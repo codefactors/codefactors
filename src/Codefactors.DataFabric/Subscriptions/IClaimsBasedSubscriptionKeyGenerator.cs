@@ -11,7 +11,7 @@ namespace Codefactors.DataFabric.Subscriptions;
 /// <summary>
 /// Interface for generating subscription keys based on claims rather than request context.
 /// </summary>
-public interface IClaimsBasedSubscriptionKeyGenerator
+public interface IClaimsBasedSubscriptionKeyGenerator : ISubscriptionKeyGenerator
 {
     /// <summary>
     /// Generates a subscription key from the supplied claims.

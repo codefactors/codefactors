@@ -11,17 +11,22 @@ namespace Codefactors.DataFabric.Transport.SignalR;
 /// <summary>
 /// Data fabric transport using SignalR.
 /// </summary>
-public class SignalRTransport : IDataFabricTransport
+/// <typeparam name="T">Type of SignalR hub.</typeparam>
+public class SignalRTransport<T> : IDataFabricTransport
+    where T : Hub
 {
-    private readonly IHubContext<DataFabricNotificationHub> _hubContext;
+    private readonly IHubContext<T> _hubContext;
+    private readonly ILogger<SignalRTransport<T>> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SignalRTransport"/> class.
+    /// Initializes a new instance of the <see cref="SignalRTransport{T}"/> class.
     /// </summary>
     /// <param name="hubContext">SignalR hub context.</param>
-    public SignalRTransport(IHubContext<DataFabricNotificationHub> hubContext)
+    /// <param name="logger">Logger.</param>
+    public SignalRTransport(IHubContext<T> hubContext, ILogger<SignalRTransport<T>> logger)
     {
         _hubContext = hubContext;
+        _logger = logger;
     }
 
     /// <summary>
@@ -33,6 +38,8 @@ public class SignalRTransport : IDataFabricTransport
     /// <returns><see cref="Task"/>.</returns>
     public async Task SendAsync(string subscriptionKey, string subscriptionPath, object update)
     {
-        await _hubContext.Clients.User(subscriptionKey).SendAsync("Notify", new { Subscription = subscriptionPath, Data = update });
+        _logger.LogInformation("SignalR transport sending update notification for path '{path}' to user with subscription key '{key}'", subscriptionPath, subscriptionKey);
+
+        await _hubContext.Clients.User(subscriptionKey).SendAsync("NotifyUpdate", new { Subscription = subscriptionPath, Data = update });
     }
 }

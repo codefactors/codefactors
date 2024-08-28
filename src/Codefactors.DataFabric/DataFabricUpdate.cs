@@ -12,7 +12,7 @@ namespace Codefactors.DataFabric;
 public class DataFabricUpdate
 {
     /// <summary>Gets the update data.</summary>
-    public object Data { get; }
+    public object Update { get; }
 
     /// <summary>Gets the update type of this update.</summary>
     public UpdateType UpdateType { get; }
@@ -24,7 +24,7 @@ public class DataFabricUpdate
     /// <param name="updateType">Update type.</param>
     public DataFabricUpdate(object data, UpdateType updateType)
     {
-        Data = data;
+        Update = data;
         UpdateType = updateType;
     }
 }

@@ -56,13 +56,13 @@ public class SubscriptionManager(
 
             var result = await invocationData.InvokeAsync(requestContext, queryParameters);
 
-            var collection = _subscriptions.GetOrAdd(path, _ => new SubscriptionCollection());
+            var collection = _subscriptions.GetOrAdd(path, _ => new SubscriptionCollection(_logger));
 
             var subscription = _subscriptionFactory.Create(requestContext, path);
 
             var added = collection.TryAdd(subscription, true);
 
-            _logger.LogInformation("Subscription added: {path}, {subscription}; already present = {added}", path, subscription, !added);
+            _logger.LogInformation("Subscription added: {path}, {key}; already present = {added}", path, subscription.Key, !added);
 
             return result;
         }
@@ -102,10 +102,14 @@ public class SubscriptionManager(
     /// <returns><see cref="Task"/>.</returns>
     public async Task NotifySubscribersAsync(string path, DataFabricUpdate update)
     {
+        _logger.LogInformation("NotifySubscribers for path '{path}'", path);
+
         try
         {
             if (_subscriptions.TryGetValue(path, out var subscribers))
                 await subscribers.NotifyAllAsync(path, update);
+            else
+                _logger.LogInformation("Update ignored; no subscribers for path '{path}'", path);
         }
         catch (AggregateException ex)
         {
