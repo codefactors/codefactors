@@ -40,6 +40,6 @@ public class SignalRTransport<T> : IDataFabricTransport
     {
         _logger.LogInformation("SignalR transport sending update notification for path '{path}' to user with subscription key '{key}'", subscriptionPath, subscriptionKey);
 
-        await _hubContext.Clients.User(subscriptionKey).SendAsync("NotifyUpdate", new { Subscription = subscriptionPath, Data = update });
+        await _hubContext.Clients.User(subscriptionKey).SendAsync("NotifyUpdate", new DataFabricMessage(subscriptionPath, update));
     }
 }

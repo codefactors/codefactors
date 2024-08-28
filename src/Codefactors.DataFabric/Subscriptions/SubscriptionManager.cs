@@ -52,7 +52,7 @@ public class SubscriptionManager(
         try
         {
             var invocationData = MatchPath(path) ??
-                throw new SubscriptionException($"No matching path found for '{path}'");
+                throw new SubscriptionException(SubscriptionErrorType.PathNotFound, $"No matching path found for '{path}'");
 
             var result = await invocationData.InvokeAsync(requestContext, queryParameters);
 
@@ -70,7 +70,7 @@ public class SubscriptionManager(
         {
             _logger.LogError(ex, "Failed to add subscription");
 
-            throw new SubscriptionException(ex.Message);
+            throw new SubscriptionException(SubscriptionErrorType.Fatal, ex.Message);
         }
     }
 

@@ -73,10 +73,10 @@ public class SubscriptionMatcher(SubscriptionTree subscriptionTree)
         // NB Also catches ArgumentNullException
         catch (ArgumentException ex)
         {
-            throw new SubscriptionException(ex.Message, ex);
+            throw new SubscriptionException(SubscriptionErrorType.InvalidArgument, ex.Message, ex);
         }
 
-        throw new SubscriptionException("Unable to match path against available subscriptions");
+        throw new SubscriptionException(SubscriptionErrorType.PathNotFound, "Unable to match path against available subscriptions");
     }
 
     private static (string key, string value) MakeParameter(
@@ -89,6 +89,6 @@ public class SubscriptionMatcher(SubscriptionTree subscriptionTree)
         in Dictionary<string, string> parameters) =>
         new InvocationHelper(
             node.DataSource ??
-                throw new SubscriptionException("Unable to resolve subscription error; internal configuration error"),
+                throw new SubscriptionException(SubscriptionErrorType.Fatal, "Unable to resolve subscription error; internal configuration error"),
             parameters);
 }
