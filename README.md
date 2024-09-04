@@ -4,7 +4,6 @@
 Codefactors.DataFabric is a library that provides a simple and efficient way to subscribe to data changes in a database. It is designed to be used in a microservices architecture where services need to be notified of changes in a database.
 
 ## SignalR Transport
-
 ```csharp
 using Microsoft.AspNetCore.SignalR;
 using Codefactors.DataFabric.Subscriptions;
