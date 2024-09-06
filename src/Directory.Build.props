@@ -5,10 +5,10 @@
 		<Authors>Codefactors Ltd</Authors>
 		<Copyright>Copyright (c) 2024, Codefactors Ltd</Copyright>
 		<Company>Codefactors Ltd</Company>
-		<PackageProjectUrl>https://github.com/codefactors/data-fabric</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/codefactors/codefactors</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/codefactors/data-fabric</RepositoryUrl>
+		<RepositoryUrl>https://github.com/codefactors/confactors</RepositoryUrl>
 	</PropertyGroup>
 	
 	<ItemGroup>

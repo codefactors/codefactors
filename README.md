@@ -12,10 +12,6 @@ using Codefactors.DataFabric.Transport.SignalR;
 
 namespace Codefactors.DataFabric.WebApi.Transport;
 
-// Unfortunately, it isn't possible to invoke methods such as UseSignalR() or MapHub() from assemblies that aren't
-// web projects, and one web project can't have a reference to another web project. This is why we have to use a helper
-// here within this web project to invoke these methods. This helper is then invoked from the main program.cs.
-
 public class SignalRHelper(Uri hubPath) : ITransportHelper
 {
     private readonly Uri _hubPath = hubPath;
