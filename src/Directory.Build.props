@@ -8,7 +8,7 @@
 		<PackageProjectUrl>https://github.com/codefactors/codefactors</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/codefactors/confactors</RepositoryUrl>
+		<RepositoryUrl>https://github.com/codefactors/codefactors</RepositoryUrl>
 	</PropertyGroup>
 	
 	<ItemGroup>
