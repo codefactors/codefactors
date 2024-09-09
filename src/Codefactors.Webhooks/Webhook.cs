@@ -18,9 +18,9 @@ public sealed class Webhook
 {
     internal static readonly UTF8Encoding SafeUTF8Encoding = new UTF8Encoding(false, true);
 
-    internal const string UNBRANDED_ID_HEADER_KEY = "webhook-id";
-    internal const string UNBRANDED_SIGNATURE_HEADER_KEY = "webhook-signature";
-    internal const string UNBRANDED_TIMESTAMP_HEADER_KEY = "webhook-timestamp";
+    private readonly string _idHeaderKey;
+    private readonly string _signatureHeaderKey;
+    private readonly string _timestampHeaderKey;
 
     private const int TOLERANCE_IN_SECONDS = 60 * 5;
 
@@ -28,24 +28,32 @@ public sealed class Webhook
 
     private byte[] _key;
 
-    public Webhook(string key)
+    public Webhook(string key, WebhookConfigurationOptions options)
     {
         if (key.StartsWith(_prefix))
             key = key.Substring(_prefix.Length);
 
-        this._key = Convert.FromBase64String(key);
+        _key = Convert.FromBase64String(key);
+
+        _idHeaderKey = options.IdHeaderKey;
+        _signatureHeaderKey = options.SignatureHeaderKey;
+        _timestampHeaderKey = options.TimestampHeaderKey;
     }
 
-    public Webhook(byte[] key)
+    public Webhook(byte[] key, WebhookConfigurationOptions options)
     {
-        this._key = key;
+        _key = key;
+
+        _idHeaderKey = options.IdHeaderKey;
+        _signatureHeaderKey = options.SignatureHeaderKey;
+        _timestampHeaderKey = options.TimestampHeaderKey;
     }
 
     public void Verify(string payload, WebHeaderCollection headers)
     {
-        string msgId = headers.Get(UNBRANDED_ID_HEADER_KEY) ?? string.Empty;
-        string msgSignature = headers.Get(UNBRANDED_SIGNATURE_HEADER_KEY) ?? string.Empty;
-        string msgTimestamp = headers.Get(UNBRANDED_TIMESTAMP_HEADER_KEY) ?? string.Empty;
+        string msgId = headers.Get(_idHeaderKey) ?? string.Empty;
+        string msgSignature = headers.Get(_signatureHeaderKey) ?? string.Empty;
+        string msgTimestamp = headers.Get(_timestampHeaderKey) ?? string.Empty;
 
         if (String.IsNullOrEmpty(msgId) || String.IsNullOrEmpty(msgSignature) || String.IsNullOrEmpty(msgTimestamp))
             throw new WebhookVerificationException("Missing Required Headers");
