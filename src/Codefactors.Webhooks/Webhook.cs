@@ -8,7 +8,6 @@
 // see https://github.com/standard-webhooks/standard-webhooks/blob/main/libraries/LICENSE.
 
 using Codefactors.Webhooks.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,19 +16,27 @@ namespace Codefactors.Webhooks;
 public sealed class Webhook
 {
     private const int TOLERANCE_IN_SECONDS = 60 * 5;
+    private const string PREFIX = "whsec_";
 
     private static readonly UTF8Encoding SafeUTF8Encoding = new UTF8Encoding(false, true);
 
+    private readonly byte[] _key;
     private readonly string _idHeaderKey;
     private readonly string _signatureHeaderKey;
     private readonly string _timestampHeaderKey;
 
-    private static string _prefix = "whsec_";
+    public Webhook(string key)
+        : this(key, WebhookConfigurationOptions.StandardWebhooks)
+    {
+    }
 
-    private byte[] _key;
+    public Webhook(byte[] key)
+        : this(key, WebhookConfigurationOptions.StandardWebhooks)
+    {
+    }
 
     public Webhook(string key, WebhookConfigurationOptions options)
-        : this(Convert.FromBase64String(key.StartsWith(_prefix) ? key.Substring(_prefix.Length) : key), options)
+        : this(Convert.FromBase64String(key.StartsWith(PREFIX) ? key.Substring(PREFIX.Length) : key), options)
     {
     }
 
@@ -106,7 +113,7 @@ public sealed class Webhook
 
     public string Sign(string msgId, DateTimeOffset timestamp, string payload)
     {
-        var toSign = $"{msgId}.{timestamp.ToUnixTimeSeconds().ToString()}.{payload}";
+        var toSign = $"{msgId}.{timestamp.ToUnixTimeSeconds()}.{payload}";
         var toSignBytes = SafeUTF8Encoding.GetBytes(toSign);
 
         using (var hmac = new HMACSHA256(this._key))
