@@ -8,7 +8,7 @@
 // see https://github.com/standard-webhooks/standard-webhooks/blob/main/libraries/LICENSE.
 
 using Codefactors.Webhooks.Diagnostics;
-using System.Net;
+using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -42,11 +42,11 @@ public sealed class Webhook
         _timestampHeaderKey = options.TimestampHeaderKey;
     }
 
-    public void Verify(string payload, WebHeaderCollection headers)
+    public void Verify(string payload, IHeaderDictionary headers)
     {
-        string msgId = headers.Get(_idHeaderKey) ?? string.Empty;
-        string msgSignature = headers.Get(_signatureHeaderKey) ?? string.Empty;
-        string msgTimestamp = headers.Get(_timestampHeaderKey) ?? string.Empty;
+        string msgId = headers[_idHeaderKey].ToString();
+        string msgSignature = headers[_signatureHeaderKey].ToString();
+        string msgTimestamp = headers[_timestampHeaderKey].ToString();
 
         if (string.IsNullOrEmpty(msgId) || string.IsNullOrEmpty(msgSignature) || string.IsNullOrEmpty(msgTimestamp))
             throw new WebhookVerificationException("Missing Required Headers");
