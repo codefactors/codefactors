@@ -15,6 +15,13 @@ public class WebhookConfigurationOptions
         TimestampHeaderKey = "webhook-timestamp"
     };
 
+    private static WebhookConfigurationOptions _svix = new WebhookConfigurationOptions
+    {
+        IdHeaderKey = "Svix-Id",
+        SignatureHeaderKey = "Svix-Signature",
+        TimestampHeaderKey = "Svix-Timestamp"
+    };
+
     public string IdHeaderKey { get; init; } = default!;
 
     public string SignatureHeaderKey { get; init; } = default!;
@@ -22,4 +29,6 @@ public class WebhookConfigurationOptions
     public string TimestampHeaderKey { get; init; } = default!;
 
     public static WebhookConfigurationOptions StandardWebhooks => _standard;
+
+    public static WebhookConfigurationOptions SvixWebhooks => _svix;
 }
