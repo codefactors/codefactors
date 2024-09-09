@@ -16,28 +16,21 @@ namespace Codefactors.Webhooks;
 
 public sealed class Webhook
 {
-    internal static readonly UTF8Encoding SafeUTF8Encoding = new UTF8Encoding(false, true);
+    private const int TOLERANCE_IN_SECONDS = 60 * 5;
+
+    private static readonly UTF8Encoding SafeUTF8Encoding = new UTF8Encoding(false, true);
 
     private readonly string _idHeaderKey;
     private readonly string _signatureHeaderKey;
     private readonly string _timestampHeaderKey;
-
-    private const int TOLERANCE_IN_SECONDS = 60 * 5;
 
     private static string _prefix = "whsec_";
 
     private byte[] _key;
 
     public Webhook(string key, WebhookConfigurationOptions options)
+        : this(Convert.FromBase64String(key.StartsWith(_prefix) ? key.Substring(_prefix.Length) : key), options)
     {
-        if (key.StartsWith(_prefix))
-            key = key.Substring(_prefix.Length);
-
-        _key = Convert.FromBase64String(key);
-
-        _idHeaderKey = options.IdHeaderKey;
-        _signatureHeaderKey = options.SignatureHeaderKey;
-        _timestampHeaderKey = options.TimestampHeaderKey;
     }
 
     public Webhook(byte[] key, WebhookConfigurationOptions options)
@@ -55,7 +48,7 @@ public sealed class Webhook
         string msgSignature = headers.Get(_signatureHeaderKey) ?? string.Empty;
         string msgTimestamp = headers.Get(_timestampHeaderKey) ?? string.Empty;
 
-        if (String.IsNullOrEmpty(msgId) || String.IsNullOrEmpty(msgSignature) || String.IsNullOrEmpty(msgTimestamp))
+        if (string.IsNullOrEmpty(msgId) || string.IsNullOrEmpty(msgSignature) || string.IsNullOrEmpty(msgTimestamp))
             throw new WebhookVerificationException("Missing Required Headers");
 
         var timestamp = Webhook.VerifyTimestamp(msgTimestamp);
@@ -90,11 +83,11 @@ public sealed class Webhook
         DateTimeOffset timestamp;
 
         var now = DateTimeOffset.UtcNow;
-        
+
         try
         {
             var timestampInt = long.Parse(timestampHeader);
-        
+
             timestamp = DateTimeOffset.FromUnixTimeSeconds(timestampInt);
         }
         catch
@@ -102,10 +95,10 @@ public sealed class Webhook
             throw new WebhookVerificationException("Invalid Signature Headers");
         }
 
-        if (timestamp < (now.AddSeconds(-1 * TOLERANCE_IN_SECONDS)))
+        if (timestamp < now.AddSeconds(-1 * TOLERANCE_IN_SECONDS))
             throw new WebhookVerificationException("Message timestamp too old");
 
-        if (timestamp > (now.AddSeconds(TOLERANCE_IN_SECONDS)))
+        if (timestamp > now.AddSeconds(TOLERANCE_IN_SECONDS))
             throw new WebhookVerificationException("Message timestamp too new");
 
         return timestamp;
