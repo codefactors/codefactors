@@ -23,9 +23,9 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "datafabric", "src\datafabri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Authentication", "src\Codefactors.Authentication\Codefactors.Authentication.csproj", "{041CC74D-15A6-44C0-9360-4DFEB8A0D915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codefactors.Common", "src\Codefactors.Common\Codefactors.Common.csproj", "{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Common", "src\Codefactors.Common\Codefactors.Common.csproj", "{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codefactors.Webhooks", "src\Codefactors.Webhooks\Codefactors.Webhooks.csproj", "{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardWebhooks", "src\Codefactors.Webhooks\StandardWebhooks.csproj", "{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

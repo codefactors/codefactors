@@ -7,13 +7,17 @@
 // Portions Copyright (c) 2023 Svix (https://www.svix.com) used under MIT licence,
 // see https://github.com/standard-webhooks/standard-webhooks/blob/main/libraries/LICENSE.
 
-using Codefactors.Webhooks.Diagnostics;
+using StandardWebhooks.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Codefactors.Webhooks;
+namespace StandardWebhooks;
 
-public sealed class Webhook
+/// <summary>
+/// Provides a set of facilities to support the use of Standard Webhooks, as defined at
+/// https://github.com/standard-webhooks/standard-webhooks.
+/// </summary>
+public sealed class StandardWebhook
 {
     private const int TOLERANCE_IN_SECONDS = 60 * 5;
     private const string PREFIX = "whsec_";
@@ -25,22 +29,40 @@ public sealed class Webhook
     private readonly string _signatureHeaderKey;
     private readonly string _timestampHeaderKey;
 
-    public Webhook(string key)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StandardWebhook"/> class.
+    /// </summary>
+    /// <param name="key">Signing key, as string.</param>
+    public StandardWebhook(string key)
         : this(key, WebhookConfigurationOptions.StandardWebhooks)
     {
     }
 
-    public Webhook(byte[] key)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StandardWebhook"/> class.
+    /// </summary>
+    /// <param name="key">Signing key, as byte array.</param>
+    public StandardWebhook(byte[] key)
         : this(key, WebhookConfigurationOptions.StandardWebhooks)
     {
     }
 
-    public Webhook(string key, WebhookConfigurationOptions options)
-        : this(Convert.FromBase64String(key.StartsWith(PREFIX) ? key.Substring(PREFIX.Length) : key), options)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StandardWebhook"/> class.
+    /// </summary>
+    /// <param name="key">Signing key, as byte array.</param>
+    /// <param name="options">Options to set custom header keys.</param>
+    public StandardWebhook(string key, WebhookConfigurationOptions options)
+        : this(Convert.FromBase64String(key.StartsWith(PREFIX) ? key[PREFIX.Length..] : key), options)
     {
     }
 
-    public Webhook(byte[] key, WebhookConfigurationOptions options)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StandardWebhook"/> class.
+    /// </summary>
+    /// <param name="key">Signing key, as byte array.</param>
+    /// <param name="options">Options to set custom header keys.</param>
+    public StandardWebhook(byte[] key, WebhookConfigurationOptions options)
     {
         _key = key;
 
@@ -58,7 +80,7 @@ public sealed class Webhook
         if (string.IsNullOrEmpty(msgId) || string.IsNullOrEmpty(msgSignature) || string.IsNullOrEmpty(msgTimestamp))
             throw new WebhookVerificationException("Missing Required Headers");
 
-        var timestamp = Webhook.VerifyTimestamp(msgTimestamp);
+        var timestamp = StandardWebhook.VerifyTimestamp(msgTimestamp);
 
         var signature = this.Sign(msgId, timestamp, payload);
 
@@ -78,11 +100,37 @@ public sealed class Webhook
             if (version != "v1")
                 continue;
 
-            if (Utils.SecureCompare(expectedSignature, passedSignature))
+            if (WebhookUtils.SecureCompare(expectedSignature, passedSignature))
                 return;
         }
 
         throw new WebhookVerificationException("No matching signature found");
+    }
+
+    public string Sign(string msgId, DateTimeOffset timestamp, string payload)
+    {
+        var toSign = $"{msgId}.{timestamp.ToUnixTimeSeconds()}.{payload}";
+        var toSignBytes = SafeUTF8Encoding.GetBytes(toSign);
+
+        using (var hmac = new HMACSHA256(this._key))
+        {
+            var hash = hmac.ComputeHash(toSignBytes);
+
+            var signature = Convert.ToBase64String(hash);
+
+            return $"v1,{signature}";
+        }
+    }
+
+    public HttpContent MakeContent<T>(T body, string msgId, DateTimeOffset timestamp)
+    {
+        var content = StringContent.Create(body);
+
+        var signature = Sign(msgId, timestamp, )
+
+        content.Headers.Add()
+
+        return content;
     }
 
     private static DateTimeOffset VerifyTimestamp(string timestampHeader)
@@ -109,20 +157,5 @@ public sealed class Webhook
             throw new WebhookVerificationException("Message timestamp too new");
 
         return timestamp;
-    }
-
-    public string Sign(string msgId, DateTimeOffset timestamp, string payload)
-    {
-        var toSign = $"{msgId}.{timestamp.ToUnixTimeSeconds()}.{payload}";
-        var toSignBytes = SafeUTF8Encoding.GetBytes(toSign);
-
-        using (var hmac = new HMACSHA256(this._key))
-        {
-            var hash = hmac.ComputeHash(toSignBytes);
-
-            var signature = Convert.ToBase64String(hash);
-
-            return $"v1,{signature}";
-        }
     }
 }

@@ -4,8 +4,11 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
-namespace Codefactors.Webhooks;
+namespace StandardWebhooks;
 
+/// <summary>
+/// Options for initialising <see cref="StandardWebhook"/> instances.
+/// </summary>
 public class WebhookConfigurationOptions
 {
     private static WebhookConfigurationOptions _standard = new WebhookConfigurationOptions
@@ -22,13 +25,29 @@ public class WebhookConfigurationOptions
         TimestampHeaderKey = "Svix-Timestamp"
     };
 
+    /// <summary>
+    /// Gets the header key for the ID field.
+    /// </summary>
     public string IdHeaderKey { get; init; } = default!;
 
+    /// <summary>
+    /// Gets the header key for the signature field.
+    /// </summary>
     public string SignatureHeaderKey { get; init; } = default!;
 
+    /// <summary>
+    /// Gets the header key for the signature field.
+    /// </summary>
     public string TimestampHeaderKey { get; init; } = default!;
 
+    /// <summary>
+    /// Gets a static instance of <see cref="WebhookConfigurationOptions"/> for Standard Webhooks as
+    /// defined in the standard.
+    /// </summary>
     public static WebhookConfigurationOptions StandardWebhooks => _standard;
 
-    public static WebhookConfigurationOptions SvixWebhooks => _svix;
+    /// <summary>
+    /// Gets a static instance of <see cref="WebhookConfigurationOptions"/> for Svix webhooks.
+    /// </summary>
+    public static WebhookConfigurationOptions Svix => _svix;
 }

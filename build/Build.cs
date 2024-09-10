@@ -98,7 +98,7 @@ class Build : NukeBuild
             DotNetTest(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetFilter("FullyQualifiedName!~Payetools.Testing")
+                .SetFilter("FullyQualifiedName!~Codefactors.Testing")
                 .EnableNoRestore()
                 .EnableNoBuild());
         });
