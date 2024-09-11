@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Authentication"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Common", "src\Codefactors.Common\Codefactors.Common.csproj", "{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardWebhooks", "src\Codefactors.Webhooks\StandardWebhooks.csproj", "{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,10 +59,6 @@ Global
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E91D315-9749-4CE3-B72D-D2EFB8666B8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,7 +71,6 @@ Global
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 		{041CC74D-15A6-44C0-9360-4DFEB8A0D915} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
-		{1E91D315-9749-4CE3-B72D-D2EFB8666B8F} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4096FE9-E7DD-4E5D-BC35-11D5E0219E55}
