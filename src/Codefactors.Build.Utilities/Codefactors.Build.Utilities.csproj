@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Title>Paytools common library</Title>
+    <Description>Common library for Paytools components</Description>
+    <Authors>$(Authors)</Authors>
+    <Company>$(Company)</Company>
+    <Copyright>$(Copyright)</Copyright>
+    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
+    <PackageReadmeFile>$(PackageReadmeFile)</PackageReadmeFile>
+    <PackageLicenseFile>$(PackageLicenseFile)</PackageLicenseFile>
+    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+    <Version>$(Version)</Version>
+    <AnalysisLevel>6.0-recommended</AnalysisLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nuke.Common" Version="8.1.0" />
+    <PackageReference Include="Serilog" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MinVer" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

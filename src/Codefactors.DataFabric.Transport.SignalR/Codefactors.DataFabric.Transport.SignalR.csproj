@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -45,6 +45,10 @@
     <ProjectReference Include="..\Codefactors.Common\Codefactors.Common.csproj" />
     <ProjectReference Include="..\Codefactors.DataFabric\Codefactors.DataFabric.csproj" />
     <ProjectReference Include="..\Codefactors.Authentication\Codefactors.Authentication.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MinVer" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

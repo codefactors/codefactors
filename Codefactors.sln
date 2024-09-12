@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Authentication"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codefactors.Common", "src\Codefactors.Common\Codefactors.Common.csproj", "{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codefactors.Build.Utilities", "src\Codefactors.Build.Utilities\Codefactors.Build.Utilities.csproj", "{EE7A74AD-0786-469B-A41C-0FDF53D9D533}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE7A74AD-0786-469B-A41C-0FDF53D9D533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7A74AD-0786-469B-A41C-0FDF53D9D533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7A74AD-0786-469B-A41C-0FDF53D9D533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7A74AD-0786-469B-A41C-0FDF53D9D533}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{AA9C1BEC-BC5F-4324-A4DB-FCBD1B8406B5} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 		{041CC74D-15A6-44C0-9360-4DFEB8A0D915} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 		{8F55D2F3-60AF-4CD1-BD6E-4F4F8D9AA01A} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
+		{EE7A74AD-0786-469B-A41C-0FDF53D9D533} = {739D5DDB-21A7-41FE-BC02-374916C80DAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4096FE9-E7DD-4E5D-BC35-11D5E0219E55}
