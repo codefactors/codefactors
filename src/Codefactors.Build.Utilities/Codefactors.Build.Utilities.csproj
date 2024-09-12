@@ -4,18 +4,11 @@
     <TargetFrameworks>net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Title>Paytools common library</Title>
-    <Description>Common library for Paytools components</Description>
-    <Authors>$(Authors)</Authors>
-    <Company>$(Company)</Company>
-    <Copyright>$(Copyright)</Copyright>
-    <PackageProjectUrl>$(PackageProjectUrl)</PackageProjectUrl>
-    <PackageReadmeFile>$(PackageReadmeFile)</PackageReadmeFile>
-    <PackageLicenseFile>$(PackageLicenseFile)</PackageLicenseFile>
-    <RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
-    <Version>$(Version)</Version>
-    <AnalysisLevel>6.0-recommended</AnalysisLevel>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
