@@ -5,13 +5,8 @@
 //   * The MIT License, see https://opensource.org/license/mit/
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.Data.Common;
-using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace Codefactors.Authentication.Jwt.Clerk;
 
@@ -23,8 +18,6 @@ public static class ClerkJwtBearerOptions
 {
     private const string ClerkAuthorityKey = "Clerk:Authority";
     private const string ClerkAuthorizedPartiesKey = "Clerk:AuthorizedParties";
-
-    private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
     /// <summary>
     /// Updates the supplied <see cref="JwtBearerOptions"/> instance with the necessary settings to support
@@ -38,8 +31,10 @@ public static class ClerkJwtBearerOptions
     /// <exception cref="ArgumentNullException">Thrown if either parameter is null.</exception>
     public static JwtBearerOptions FromConfiguration(JwtBearerOptions options, ConfigurationManager configuration)
     {
+#if NET8_0
         ArgumentNullException.ThrowIfNull(nameof(options));
         ArgumentNullException.ThrowIfNull(nameof(configuration));
+#endif
 
         // Authority is the URL of our clerk instance
         var authority = configuration[ClerkAuthorityKey];

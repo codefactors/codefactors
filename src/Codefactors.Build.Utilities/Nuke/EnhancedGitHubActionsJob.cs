@@ -4,6 +4,8 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 using Nuke.Common.CI.GitHubActions.Configuration;
 using Nuke.Common.Tooling;
 using Nuke.Common.Utilities;
