@@ -30,7 +30,7 @@ jobs:
       - name: Set up .NET 9.0 Preview
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.0-rc.2.24474.3'
+          dotnet-version: '9.0.0-rc.2.x'
 
       - name: Set up .NET 8.0
         uses: actions/setup-dotnet@v3
