@@ -11,7 +11,7 @@
 #
 #         nuke --generate-configuration GitHubActions_continuous --host GitHubActions
 #
-# </auto-generated>
+# </auto-generated> with manual adjustments
 # ------------------------------------------------------------------------------
 
 name: continuous
