@@ -22,15 +22,19 @@ jobs:
   ubuntu-latest:
     name: ubuntu-latest
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '8.0.x', '9.0.0-rc2.x']
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up .NET 8.0
-        uses: actions/setup-dotnet@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: ${{ matrix.dotnet }}
 
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
         uses: actions/cache@v4
