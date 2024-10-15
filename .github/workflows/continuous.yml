@@ -34,7 +34,9 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnet }}
+          dotnet-version: |
+            8.0.x
+            9.0.0-rc2.x
 
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
         uses: actions/cache@v4
