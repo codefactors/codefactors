@@ -27,11 +27,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up .NET 9.0 Preview
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.0-rc.2.x'
-
       - name: Set up .NET 8.0
         uses: actions/setup-dotnet@v3
         with:
