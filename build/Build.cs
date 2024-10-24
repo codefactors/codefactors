@@ -4,6 +4,7 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+using Codefactors.Build.Utilities.Nuke;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Git;
@@ -19,7 +20,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Slack.SlackTasks;
 
 /*
- NB Until Nuke supports .net 9.0, the following must be added to the build yml file, immediately
+ NB Until Nuke supports .net 9.0, the following must be added to the build yaml file, immediately
  after the checkout step:
 
       - name: Setup dotnet
@@ -31,15 +32,17 @@ using static Nuke.Common.Tools.Slack.SlackTasks;
 
  */
 
-[GitHubActions(
+[EnhancedGitHubActions(
     "continuous",
     GitHubActionsImage.UbuntuLatest,
     On = new[] { GitHubActionsTrigger.Push },
     InvokedTargets = new[] { nameof(Publish) },
     ImportSecrets = new[] { nameof(NugetApiKey), nameof(SlackWebhook) },
     FetchDepth = 0)]
-class Build : NukeBuild
+class Build : EnhancedNukeBuild
 {
+    protected override string ProjectTitle => "Codefactors Public Assemblies";
+
     public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter]
@@ -49,9 +52,6 @@ class Build : NukeBuild
     [Secret]
     readonly string NugetApiKey;
 
-    [Parameter]
-    [Secret]
-    readonly string SlackWebhook;
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;

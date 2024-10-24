@@ -20,4 +20,8 @@
     <PackageDownload Include="minver-cli" Version="[5.0.0]" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\Codefactors.Build.Utilities\Codefactors.Build.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
