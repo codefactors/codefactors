@@ -4,6 +4,15 @@
 //
 //   * The MIT License, see https://opensource.org/license/mit/
 
+/* IMPORTANT:
+ * 
+ * This class overrides functionality in the GitHubActionsJob class in Nuke.Common.  It should be kept
+ * in sync with the original class in Nuke.Common.  The original class is located at:
+ * https://github.com/nuke-build/nuke/blob/master/source/Nuke.Common/CI/GitHubActions/Configuration/GitHubActionsJob.cs
+ * 
+ * 24.10.2024 Updated to 8.1.2
+ */
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using Nuke.Common.CI.GitHubActions.Configuration;
@@ -58,6 +67,23 @@ public class EnhancedGitHubActionsJob : GitHubActionsJob
                     if (ConcurrencyCancelInProgress)
                     {
                         writer.WriteLine("cancel-in-progress: true");
+                    }
+                }
+            }
+
+            if (!EnvironmentName.IsNullOrWhiteSpace())
+            {
+                if (EnvironmentUrl.IsNullOrWhiteSpace())
+                {
+                    writer.WriteLine($"environment: {EnvironmentName}");
+                }
+                else
+                {
+                    writer.WriteLine("environment:");
+                    using (writer.Indent())
+                    {
+                        writer.WriteLine($"name: {EnvironmentName}");
+                        writer.WriteLine($"url: {EnvironmentUrl}");
                     }
                 }
             }
