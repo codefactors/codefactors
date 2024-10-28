@@ -29,7 +29,7 @@ public static class ClerkJwtBearerOptions
     /// <returns>Updated <see cref="JwtBearerOptions"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if either of the configuration parameters are missing.</exception>
     /// <exception cref="ArgumentNullException">Thrown if either parameter is null.</exception>
-    public static JwtBearerOptions FromConfiguration(JwtBearerOptions options, ConfigurationManager configuration)
+    public static JwtBearerOptions FromConfiguration(JwtBearerOptions options, IConfigurationSection configuration)
     {
 #if NET8_0
         ArgumentNullException.ThrowIfNull(nameof(options));
