@@ -48,7 +48,7 @@ public class BasicAuthenticationSchemeHandler : AuthenticationHandler<BasicAuthe
     /// Method that handles authentication.
     /// </summary>
     /// <returns>The <see cref="AuthenticateResult"/>.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the <see cref="ICredentialsValidator"/> fails
+    /// <exception cref="InvalidOperationException">Thrown if the ValidateCredentials delegate fails
     /// to set the Principal claim.</exception>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {

@@ -23,7 +23,7 @@ public class BasicAuthenticationSchemeOptions : AuthenticationSchemeOptions
     /// <summary>
     /// Gets or sets the validator for validating basic authentication credentials.
     /// </summary>
-    public ICredentialsValidator CredentialsValidator { get; set; } = default!;
+    public Func<ValidateCredentialsContext, Task<IValidationResult>> ValidateCredentials { get; set; } = default!;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BasicAuthenticationSchemeOptions"/> class.
