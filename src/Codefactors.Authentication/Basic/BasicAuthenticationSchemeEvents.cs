@@ -19,10 +19,10 @@ public class BasicAuthenticationSchemeEvents
     /// <exception cref="InvalidOperationException">Thrown if the credentials validator has not been set.</exception>
     public virtual async Task ValidateCredentialsAsync(ValidateCredentialsContext context)
     {
-        if (context.Options.ValidateCredentials == null)
+        if (context.Options.CredentialsValidator == null)
             throw new InvalidOperationException("CredentialsValidator property on BasicAuthenticationSchemeOptions must be set");
 
-        var validationResult = await context.Options.ValidateCredentials(context);
+        var validationResult = await context.Options.CredentialsValidator.ValidateAsync(context);
 
         if (validationResult.IsValid)
         {
