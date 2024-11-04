@@ -29,4 +29,20 @@ public static class AuthenticationBuilderExtensions
 
         return builder;
     }
+
+    /// <summary>
+    /// Adds the basic authentication scheme without options.  Depends on the Options pattern
+    /// for configuration.
+    /// </summary>
+    /// <param name="builder">Builder to add scheme to.</param>
+    /// <returns>Builder.</returns>
+    public static AuthenticationBuilder AddBasicScheme(this AuthenticationBuilder builder)
+    {
+        builder.AddScheme<BasicAuthenticationSchemeOptions, BasicAuthenticationSchemeHandler>(
+            BasicAuthenticationSchemeDefaults.AuthenticationScheme,
+            "Basic Authentication",
+            null);
+
+        return builder;
+    }
 }
