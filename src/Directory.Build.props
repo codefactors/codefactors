@@ -7,7 +7,7 @@
 		<Company>Codefactors Ltd</Company>
 		<PackageProjectUrl>https://github.com/codefactors/codefactors</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/codefactors/codefactors</RepositoryUrl>
 	</PropertyGroup>
 	
@@ -16,7 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(SolutionDir)shared/LICENSE.md" Pack="true" PackagePath="" />
 		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
